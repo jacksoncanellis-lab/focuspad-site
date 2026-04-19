@@ -12,6 +12,16 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { background: #0C0C0C; overflow-x: hidden; }
 @keyframes sp { to { transform: rotate(360deg); } }
+@keyframes tutorialPulse {
+  0%, 100% { outline-color: rgba(139,154,123,.4); }
+  50%     { outline-color: rgba(139,154,123,1); }
+}
+.tutorial-pulse {
+  outline: 3px solid rgba(139,154,123,.4);
+  outline-offset: 3px;
+  border-radius: 6px;
+  animation: tutorialPulse 1.2s ease-in-out infinite;
+}
 </style>
 </head>
 <body>
@@ -63,8 +73,8 @@ const DOCK=[
 {id:"cam",name:"Camera",R:CameraIcon},
 ];
 
-function Slot({item,size,dim,onClick}){
-return(<div onClick={onClick} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3,cursor:onClick?"pointer":"default",position:"relative"}}>
+function Slot({item,size,dim,onClick,pulse}){
+return(<div onClick={onClick} className={pulse?"tutorial-pulse":undefined} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3,cursor:onClick?"pointer":"default",position:"relative"}}>
 <div style={{filter:dim?"grayscale(.7) brightness(.4)":"none",transition:"filter .5s ease"}}><item.R s={size}/></div>
 {item.badge&&!dim&&<div style={{position:"absolute",top:-4,right:size<42?-2:0,minWidth:17,height:17,borderRadius:9,background:"#FF3B30",color:"#fff",fontSize:10.5,fontWeight:600,display:"flex",alignItems:"center",justifyContent:"center",padding:"0 4px",fontFamily:"-apple-system,sans-serif",zIndex:2}}>{item.badge}</div>}
 {dim&&<div style={{position:"absolute",top:-3,right:size<42?0:1,width:14,height:14,borderRadius:"50%",background:"rgba(174,174,178,.88)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:2}}><span style={{fontSize:7}}>⏳</span></div>}
@@ -75,14 +85,14 @@ function Bar({dark}){const c=dark?"rgba(58,58,46,.75)":"rgba(0,0,0,.75)";return(
 
 function Frame({children,label}){return(<div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:14}}><div style={{width:268,height:564,background:"#1A1A1A",borderRadius:42,padding:"10px 9px",boxShadow:"0 20px 50px rgba(0,0,0,.5),0 0 0 .5px rgba(255,255,255,.06)",position:"relative"}}><div style={{position:"absolute",top:9,left:"50%",transform:"translateX(-50%)",width:108,height:25,background:"#000",borderRadius:18,zIndex:50}}/><div style={{width:"100%",height:"100%",borderRadius:33,overflow:"hidden",position:"relative"}}>{children}</div></div><span style={{color:"rgba(255,255,255,.4)",fontSize:12,fontFamily:"'DM Sans',sans-serif",letterSpacing:".04em"}}>{label}</span></div>)}
 
-function Home({dim,onTap,onAppTap}){
+function Home({dim,onTap,onAppTap,pulseAppId}){
 return(<div style={{background:"#F6F6F6",width:"100%",height:"100%",position:"relative",display:"flex",flexDirection:"column"}}>
 <Bar/>
 <div style={{flex:1,padding:"24px 10px 0",overflowY:"hidden",display:"flex",flexDirection:"column",justifyContent:"flex-start"}}>
-{[0,4,8,12,16].map(st=>(<div key={st} style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:1,marginBottom:8,justifyItems:"center"}}>{APPS.slice(st,st+4).map((a,i)=><Slot key={i} item={a} size={42} dim={dim} onClick={dim&&onAppTap?()=>onAppTap(a):undefined}/>)}</div>))}
+{[0,4,8,12,16].map(st=>(<div key={st} style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:1,marginBottom:8,justifyItems:"center"}}>{APPS.slice(st,st+4).map((a,i)=><Slot key={i} item={a} size={42} dim={dim} onClick={dim&&onAppTap?()=>onAppTap(a):undefined} pulse={pulseAppId===a.id}/>)}</div>))}
 </div>
 <div style={{display:"flex",justifyContent:"center",padding:"3px 0 5px"}}><div style={{background:"rgba(0,0,0,.055)",borderRadius:18,padding:"4px 16px"}}><span style={{fontSize:11,color:"rgba(0,0,0,.32)",fontFamily:"-apple-system,sans-serif"}}>🔍 Search</span></div></div>
-<div style={{background:"rgba(255,255,255,.6)",backdropFilter:"blur(30px)",borderRadius:"22px 22px 0 0",padding:"7px 20px 10px",display:"flex",justifyContent:"center",gap:20}}>{DOCK.map((a,i)=><Slot key={i} item={a} size={38} dim={dim} onClick={dim&&onAppTap?()=>onAppTap(a):undefined}/>)}</div>
+<div style={{background:"rgba(255,255,255,.6)",backdropFilter:"blur(30px)",borderRadius:"22px 22px 0 0",padding:"7px 20px 10px",display:"flex",justifyContent:"center",gap:20}}>{DOCK.map((a,i)=><Slot key={i} item={a} size={38} dim={dim} onClick={dim&&onAppTap?()=>onAppTap(a):undefined} pulse={pulseAppId===a.id}/>)}</div>
 {!dim&&onTap&&(<div onClick={onTap} style={{position:"absolute",bottom:82,left:10,right:10,background:"rgba(139,154,123,.94)",backdropFilter:"blur(20px)",borderRadius:13,padding:"9px 13px",display:"flex",alignItems:"center",gap:9,boxShadow:"0 5px 20px rgba(0,0,0,.18)",cursor:"pointer"}}><div style={{width:30,height:30,borderRadius:7,background:SAGE_DARK,display:"flex",alignItems:"center",justifyContent:"center",fontSize:14}}>🔒</div><div><div style={{fontSize:11.5,fontWeight:600,color:"#fff",fontFamily:"-apple-system,sans-serif"}}>FocusPad</div><div style={{fontSize:10,color:"rgba(255,255,255,.72)",fontFamily:"-apple-system,sans-serif"}}>Period 3 starts in 2 min — tap to dock</div></div></div>)}
 {dim&&(<div style={{position:"absolute",bottom:82,left:10,right:10,background:"rgba(107,125,94,.94)",backdropFilter:"blur(20px)",borderRadius:13,padding:"8px 13px",display:"flex",alignItems:"center",gap:7}}><div style={{width:7,height:7,borderRadius:"50%",background:"#6ECF72",boxShadow:"0 0 5px rgba(110,207,114,.55)"}}/><span style={{fontSize:10.5,fontWeight:500,color:"#fff",fontFamily:"-apple-system,sans-serif"}}>FocusPad Active · Unlocks 10:45 AM</span></div>)}
 </div>)}
@@ -91,26 +101,48 @@ function Conn(){const[d,setD]=useState(0);useEffect(()=>{const i=setInterval(()=
 
 function Lock(){const[s,setS]=useState(false);useEffect(()=>{setTimeout(()=>setS(true),300)},[]);return(<div style={{background:LOCK_BG,width:"100%",height:"100%",position:"relative"}}><Bar dark/><div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",height:"calc(100% - 48px)",gap:13,padding:"0 20px"}}><div style={{width:76,height:76,borderRadius:"50%",background:SAGE,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 6px 22px rgba(139,154,123,.32)",transform:s?"scale(1)":"scale(.7)",opacity:s?1:0,transition:"all .5s cubic-bezier(.175,.885,.32,1.275)"}}><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><div style={{textAlign:"center"}}><div style={{fontSize:20,fontWeight:700,color:TEXT_DARK,fontFamily:"-apple-system,sans-serif",marginBottom:2}}>FocusPad Active</div><div style={{fontSize:12,color:SAGE_DARK,fontFamily:"-apple-system,sans-serif"}}>Phone locked during class</div></div><div style={{background:"rgba(255,255,255,.55)",backdropFilter:"blur(8px)",borderRadius:13,padding:"13px 16px",width:"100%",marginTop:4,border:"1px solid rgba(139,154,123,.1)"}}><div style={{fontSize:9.5,color:SAGE,fontFamily:"-apple-system,sans-serif",textTransform:"uppercase",letterSpacing:".07em",marginBottom:6,fontWeight:600}}>Current Session</div><div style={{fontSize:14,fontWeight:600,color:TEXT_DARK,fontFamily:"-apple-system,sans-serif",marginBottom:1}}>AP US History — Ms. Johnson</div><div style={{fontSize:11,color:"rgba(58,58,46,.48)",fontFamily:"-apple-system,sans-serif"}}>Period 3 · Room 214 · 9:30 – 10:45 AM</div><div style={{display:"flex",alignItems:"center",gap:5,marginTop:8}}><div style={{width:6,height:6,borderRadius:"50%",background:"#6ECF72",boxShadow:"0 0 5px rgba(110,207,114,.5)"}}/><span style={{fontSize:10,color:SAGE,fontFamily:"-apple-system,sans-serif"}}>Locked at 9:31 AM · Seat C4</span></div></div><div style={{display:"flex",alignItems:"center",gap:5,marginTop:1}}><span style={{fontSize:12}}>📞</span><span style={{fontSize:10,color:"rgba(58,58,46,.38)",fontFamily:"-apple-system,sans-serif"}}>Emergency calls always come through</span></div></div><div style={{position:"absolute",bottom:6,left:"50%",transform:"translateX(-50%)",width:108,height:4,background:"rgba(58,58,46,.12)",borderRadius:2}}/></div>)}
 
-function Blocked({app}){return(<div style={{background:"#F2F2F7",width:"100%",height:"100%",position:"relative"}}><Bar dark/><div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",height:"calc(100% - 48px)",gap:13,padding:"0 26px"}}><div style={{width:60,height:60,borderRadius:"50%",background:"linear-gradient(135deg,#E8E8ED,#D1D1D6)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:26}}>⏳</span></div><div style={{textAlign:"center"}}><div style={{fontSize:18,fontWeight:600,color:"#1C1C1E",fontFamily:"-apple-system,sans-serif",marginBottom:4}}>App Limit</div><div style={{fontSize:13,color:"#8E8E93",fontFamily:"-apple-system,sans-serif",lineHeight:1.4}}>{app?.name||"This app"} is restricted during class time.</div></div><div style={{display:"flex",alignItems:"center",gap:6,background:"rgba(139,154,123,.1)",borderRadius:10,padding:"8px 13px"}}><div style={{width:24,height:24,borderRadius:6,background:SAGE,display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><div><div style={{fontSize:11,fontWeight:600,color:SAGE_DEEPER,fontFamily:"-apple-system,sans-serif"}}>Managed by FocusPad</div><div style={{fontSize:9.5,color:SAGE,fontFamily:"-apple-system,sans-serif"}}>Unlocks at 10:45 AM</div></div></div><button style={{marginTop:8,padding:"9px 26px",borderRadius:11,border:"none",background:"rgba(142,142,147,.12)",color:"#8E8E93",fontSize:14,fontWeight:500,fontFamily:"-apple-system,sans-serif",cursor:"default"}}>OK</button></div></div>)}
+function Blocked({app,onDismiss,pulseOK}){return(<div style={{background:"#F2F2F7",width:"100%",height:"100%",position:"relative"}}><Bar dark/><div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",height:"calc(100% - 48px)",gap:13,padding:"0 26px"}}><div style={{width:60,height:60,borderRadius:"50%",background:"linear-gradient(135deg,#E8E8ED,#D1D1D6)",display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:26}}>⏳</span></div><div style={{textAlign:"center"}}><div style={{fontSize:18,fontWeight:600,color:"#1C1C1E",fontFamily:"-apple-system,sans-serif",marginBottom:4}}>App Limit</div><div style={{fontSize:13,color:"#8E8E93",fontFamily:"-apple-system,sans-serif",lineHeight:1.4}}>{app?.name||"This app"} is restricted during class time.</div></div><div style={{display:"flex",alignItems:"center",gap:6,background:"rgba(139,154,123,.1)",borderRadius:10,padding:"8px 13px"}}><div style={{width:24,height:24,borderRadius:6,background:SAGE,display:"flex",alignItems:"center",justifyContent:"center"}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><div><div style={{fontSize:11,fontWeight:600,color:SAGE_DEEPER,fontFamily:"-apple-system,sans-serif"}}>Managed by FocusPad</div><div style={{fontSize:9.5,color:SAGE,fontFamily:"-apple-system,sans-serif"}}>Unlocks at 10:45 AM</div></div></div><button onClick={onDismiss} className={pulseOK?"tutorial-pulse":undefined} style={{marginTop:8,padding:"9px 26px",borderRadius:11,border:"none",background:"rgba(142,142,147,.2)",color:"#3A3A3C",fontSize:14,fontWeight:600,fontFamily:"-apple-system,sans-serif",cursor:"pointer"}}>OK</button></div></div>)}
+
+function TutorialPanel({step,total,texts,completion,onSkip,onClose}){
+if(step===0||step==null)return null;
+const isDone=step>total;
+const text=isDone?completion:texts[step];
+return(<div style={{position:"fixed",top:12,left:"50%",transform:"translateX(-50%)",width:420,maxWidth:"calc(100vw - 24px)",background:"#6B7D5E",color:"#fff",fontFamily:"'DM Sans',sans-serif",padding:12,borderRadius:10,zIndex:200,boxShadow:"0 6px 22px rgba(0,0,0,.3)"}}>
+<div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:".09em",color:"rgba(255,255,255,.65)",marginBottom:5}}>{isDone?"Complete":`Step ${step} of ${total}`}</div>
+<div style={{fontSize:13,lineHeight:1.45,color:"#fff",paddingRight:92}}>{text}</div>
+<button onClick={isDone?onClose:onSkip} style={{position:"absolute",bottom:8,right:12,fontSize:11,fontWeight:500,color:"rgba(255,255,255,.6)",cursor:"pointer",background:"none",border:"none",fontFamily:"'DM Sans',sans-serif",padding:"2px 4px"}} onMouseEnter={e=>e.currentTarget.style.color="rgba(255,255,255,.95)"} onMouseLeave={e=>e.currentTarget.style.color="rgba(255,255,255,.6)"}>{isDone?"Close":"Skip tutorial"}</button>
+</div>);
+}
+
+const TUT_TEXT={
+1:"Click the green 'Phone Placed on Pad' button below to dock the student's phone.",
+2:"Now tap TikTok on the right phone to see a restricted app.",
+3:"Tap OK to dismiss the block screen.",
+};
+const TUT_DONE="Demo complete. Try other apps or click Reset.";
 
 function App(){
 const[locked,setLocked]=useState(false);
 const[leftV,setLeftV]=useState("home");
 const[rightV,setRightV]=useState("home");
 const[tapped,setTapped]=useState(null);
-const place=()=>{setLeftV("conn");setTimeout(()=>{setLeftV("lock");setLocked(true)},2000)};
-const tapApp=(a)=>{if(!locked)return;setTapped(a);setRightV("block");setTimeout(()=>{setRightV("home");setTapped(null)},3000)};
-const reset=()=>{setLeftV("home");setRightV("home");setLocked(false);setTapped(null)};
+const[tutStep,setTutStep]=useState(1);
+const place=()=>{setLeftV("conn");setTimeout(()=>{setLeftV("lock");setLocked(true)},2000);if(tutStep===1)setTutStep(2)};
+const tapApp=(a)=>{if(!locked)return;setTapped(a);setRightV("block");if(tutStep===2)setTutStep(3)};
+const dismissBlock=()=>{setRightV("home");setTapped(null);if(tutStep===3)setTutStep(4)};
+const reset=()=>{setLeftV("home");setRightV("home");setLocked(false);setTapped(null);setTutStep(1)};
+const skipTut=()=>setTutStep(0);
 
 return(<div style={{minHeight:"100vh",background:"linear-gradient(145deg,#0C0C0C 0%,#13131F 50%,#0C0C0C 100%)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:24,padding:24,position:"relative"}}>
+<TutorialPanel step={tutStep} total={3} texts={TUT_TEXT} completion={TUT_DONE} onSkip={skipTut} onClose={skipTut}/>
 <div style={{position:"absolute",inset:0,backgroundImage:"radial-gradient(rgba(139,154,123,.05) 1px,transparent 1px)",backgroundSize:"26px 26px",pointerEvents:"none"}}/>
-<div style={{fontSize:12,color:"rgba(139,154,123,.6)",textTransform:"uppercase",letterSpacing:".14em",fontWeight:600,fontFamily:"'DM Sans',sans-serif",zIndex:1}}>What Happens to the Student's Phone</div>
+<div style={{fontSize:12,color:"rgba(139,154,123,.6)",textTransform:"uppercase",letterSpacing:".14em",fontWeight:600,fontFamily:"'DM Sans',sans-serif",zIndex:1,marginTop:56}}>What Happens to the Student's Phone</div>
 <div style={{display:"flex",gap:36,alignItems:"flex-start",zIndex:1}}>
 <Frame label={leftV==="home"?"① Tap to dock phone":leftV==="conn"?"Connecting...":"✓ Phone locked"}>{leftV==="home"&&<Home onTap={place}/>}{leftV==="conn"&&<Conn/>}{leftV==="lock"&&<Lock/>}</Frame>
 <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",height:564}}><div style={{fontSize:10,color:locked?"rgba(255,255,255,.25)":"rgba(255,255,255,.08)",fontFamily:"'DM Sans',sans-serif",textTransform:"uppercase",letterSpacing:".1em",writingMode:"vertical-lr",transform:"rotate(180deg)",transition:"color .5s"}}>{locked?"tap any app →":""}</div></div>
-<Frame label={!locked?"Normal phone — all apps work":"② Tap any app to see the block"}>{rightV==="home"&&<Home dim={locked} onAppTap={locked?tapApp:undefined}/>}{rightV==="block"&&<Blocked app={tapped}/>}</Frame>
+<Frame label={!locked?"Normal phone — all apps work":"② Tap any app to see the block"}>{rightV==="home"&&<Home dim={locked} onAppTap={locked?tapApp:undefined} pulseAppId={tutStep===2&&locked?"tiktok":null}/>}{rightV==="block"&&<Blocked app={tapped} onDismiss={dismissBlock} pulseOK={tutStep===3}/>}</Frame>
 </div>
-<div style={{zIndex:1}}>{!locked?(<button onClick={place} style={{padding:"11px 30px",borderRadius:13,border:`1.5px solid ${SAGE}`,background:"rgba(139,154,123,.1)",color:SAGE,fontSize:13.5,fontWeight:600,fontFamily:"'DM Sans',sans-serif",cursor:"pointer",transition:"background .2s"}} onMouseEnter={e=>e.currentTarget.style.background="rgba(139,154,123,.22)"} onMouseLeave={e=>e.currentTarget.style.background="rgba(139,154,123,.1)"}>📱 Phone Placed on Pad</button>):(<button onClick={reset} style={{padding:"9px 22px",borderRadius:9,border:"1px solid rgba(255,255,255,.1)",background:"rgba(255,255,255,.03)",color:"rgba(255,255,255,.35)",fontSize:11.5,fontWeight:500,fontFamily:"'DM Sans',sans-serif",cursor:"pointer"}}>↺ Reset</button>)}</div>
+<div style={{zIndex:1}}>{!locked?(<button onClick={place} className={tutStep===1?"tutorial-pulse":undefined} style={{padding:"11px 30px",borderRadius:13,border:`1.5px solid ${SAGE}`,background:"rgba(139,154,123,.1)",color:SAGE,fontSize:13.5,fontWeight:600,fontFamily:"'DM Sans',sans-serif",cursor:"pointer",transition:"background .2s"}} onMouseEnter={e=>e.currentTarget.style.background="rgba(139,154,123,.22)"} onMouseLeave={e=>e.currentTarget.style.background="rgba(139,154,123,.1)"}>📱 Phone Placed on Pad</button>):(<button onClick={reset} style={{padding:"9px 22px",borderRadius:9,border:"1px solid rgba(255,255,255,.1)",background:"rgba(255,255,255,.03)",color:"rgba(255,255,255,.35)",fontSize:11.5,fontWeight:500,fontFamily:"'DM Sans',sans-serif",cursor:"pointer"}}>↺ Reset</button>)}</div>
 </div>)}
 
 ReactDOM.render(<App/>, document.getElementById('root'));

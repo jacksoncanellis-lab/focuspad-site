@@ -12,6 +12,16 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html,body,#root{height:100%;overflow:hidden}
 body{background:#F5F5F5;font-family:-apple-system,sans-serif}
+@keyframes tutorialPulse {
+  0%,100% { outline-color: rgba(139,154,123,.4); }
+  50%     { outline-color: rgba(139,154,123,1); }
+}
+.tutorial-pulse {
+  outline: 3px solid rgba(139,154,123,.4);
+  outline-offset: 3px;
+  border-radius: 6px;
+  animation: tutorialPulse 1.2s ease-in-out infinite;
+}
 </style>
 </head>
 <body>
@@ -25,12 +35,12 @@ const NAMES=["Alex M","Jordan T","Casey R","Morgan L","Riley K","Taylor W","Aver
 
 function init(){return NAMES.map((name,i)=>({id:i,name,seat:`${Math.floor(i/6)+1}${String.fromCharCode(65+(i%6))}`,status:i===9?"red":i===22?"red":"green",time:i===9||i===22?null:`9:${30+Math.floor(Math.random()*4)}`,reason:null,isMarcus:i===9}))}
 
-function Tile({s,onClick}){
+function Tile({s,onClick,pulse}){
 const g=s.status==="green",r=s.status==="red",n=s.status==="neutral";
 const bg=g?GREEN_BG:r?RED_BG:NEUTRAL_BG;
 const bc=g?GREEN:r?RED:NEUTRAL;
 return(
-<div onClick={onClick} style={{
+<div onClick={onClick} className={pulse?"tutorial-pulse":undefined} style={{
 background:bg,border:`2px solid ${bc}`,borderRadius:8,
 padding:"6px 3px 5px",display:"flex",flexDirection:"column",
 alignItems:"center",gap:2,cursor:r?"pointer":"default",
@@ -45,7 +55,7 @@ transition:"all .35s ease",position:"relative",
 </div>
 )}
 
-function ReasonPopup({student,onSelect,onClose}){
+function ReasonPopup({student,onSelect,onClose,pulseReason}){
 return(
 <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.4)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:100,backdropFilter:"blur(4px)"}} onClick={onClose}>
 <div onClick={e=>e.stopPropagation()} style={{background:"#fff",borderRadius:14,padding:"20px 24px",width:300,boxShadow:"0 20px 60px rgba(0,0,0,.25)",display:"flex",flexDirection:"column",gap:14}}>
@@ -65,7 +75,7 @@ return(
 {label:"📱 Didn't bring phone",reason:"No phone"},
 {label:"📋 Other",reason:"Released"},
 ].map((opt,i)=>(
-<button key={i} onClick={()=>onSelect(opt.reason)} style={{
+<button key={i} onClick={()=>onSelect(opt.reason)} className={pulseReason===opt.reason?"tutorial-pulse":undefined} style={{
 padding:"10px 16px",borderRadius:9,border:"1.5px solid #E0E0E0",
 background:"#fff",color:TEXT,fontSize:13,fontWeight:500,
 fontFamily:"-apple-system,sans-serif",cursor:"pointer",
@@ -81,10 +91,30 @@ transition:"all .12s",
 </div>
 )}
 
+function TutorialPanel({step,total,texts,completion,onSkip,onClose}){
+if(step===0||step==null)return null;
+const isDone=step>total;
+const text=isDone?completion:texts[step];
+return(<div style={{position:"fixed",top:12,left:"50%",transform:"translateX(-50%)",width:420,maxWidth:"calc(100vw - 24px)",background:"#6B7D5E",color:"#fff",fontFamily:"'DM Sans',sans-serif",padding:12,borderRadius:10,zIndex:200,boxShadow:"0 6px 22px rgba(0,0,0,.3)"}}>
+<div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:".09em",color:"rgba(255,255,255,.65)",marginBottom:5}}>{isDone?"Complete":`Step ${step} of ${total}`}</div>
+<div style={{fontSize:13,lineHeight:1.45,color:"#fff",paddingRight:92}}>{text}</div>
+<button onClick={isDone?onClose:onSkip} style={{position:"absolute",bottom:8,right:12,fontSize:11,fontWeight:500,color:"rgba(255,255,255,.6)",cursor:"pointer",background:"none",border:"none",fontFamily:"'DM Sans',sans-serif",padding:"2px 4px"}} onMouseEnter={e=>e.currentTarget.style.color="rgba(255,255,255,.95)"} onMouseLeave={e=>e.currentTarget.style.color="rgba(255,255,255,.6)"}>{isDone?"Close":"Skip tutorial"}</button>
+</div>);
+}
+
+const TUT_TEXT={
+1:"Class just started. Marcus Johnson put his phone on the pad — click 'Student Docked Phone' to confirm.",
+2:"Emily Warren is absent today. Click her red tile to release her.",
+3:"Select 'Absent' since she's not in class.",
+4:"100% compliance. When class ends, click 'Release All' for free time.",
+};
+const TUT_DONE="Demo complete. Click Reset Demo to run again.";
+
 function Dashboard(){
 const[students,setStudents]=useState(init);
 const[released,setReleased]=useState(false);
 const[popup,setPopup]=useState(null);
+const[tutStep,setTutStep]=useState(1);
 
 const greens=students.filter(s=>s.status==="green").length;
 const reds=students.filter(s=>s.status==="red").length;
@@ -93,15 +123,18 @@ const active=greens+reds;
 const pct=released?"—":active>0?Math.round((greens/active)*100):100;
 const marcusIsRed=students.find(s=>s.isMarcus)?.status==="red";
 
-const dockMarcus=()=>{setStudents(p=>p.map(s=>s.isMarcus?{...s,status:"green",time:"9:38"}:s))};
-const releaseStudent=(id,reason)=>{setStudents(p=>p.map(s=>s.id===id?{...s,status:"neutral",reason}:s));setPopup(null)};
-const releaseAll=()=>{setStudents(p=>p.map(s=>({...s,status:"neutral",reason:"Free time"})));setReleased(true)};
-const resetDemo=()=>{setStudents(init());setReleased(false);setPopup(null)};
+const dockMarcus=()=>{setStudents(p=>p.map(s=>s.isMarcus?{...s,status:"green",time:"9:38"}:s));if(tutStep===1)setTutStep(2)};
+const openPopup=(s)=>{setPopup(s);if(tutStep===2&&s.id===22)setTutStep(3)};
+const releaseStudent=(id,reason)=>{setStudents(p=>p.map(s=>s.id===id?{...s,status:"neutral",reason}:s));setPopup(null);if(tutStep===3&&id===22)setTutStep(4)};
+const releaseAll=()=>{setStudents(p=>p.map(s=>({...s,status:"neutral",reason:"Free time"})));setReleased(true);if(tutStep===4)setTutStep(5)};
+const resetDemo=()=>{setStudents(init());setReleased(false);setPopup(null);setTutStep(1)};
+const skipTut=()=>setTutStep(0);
 
 const rows=[];for(let i=0;i<students.length;i+=6){rows.push(students.slice(i,i+6))}
 
 return(
 <div style={{height:"100vh",display:"flex",flexDirection:"column",background:"#F5F5F5",overflow:"hidden"}}>
+<TutorialPanel step={tutStep} total={4} texts={TUT_TEXT} completion={TUT_DONE} onSkip={skipTut} onClose={skipTut}/>
 
 {/* Nav */}
 <div style={{background:"#fff",borderBottom:"1px solid #E8E8E8",padding:"8px 24px",display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0}}>
@@ -129,8 +162,8 @@ return(
 <div style={{fontSize:11,color:"#aaa"}}>Period 3 · Room 214 · 9:30 – 10:45 AM · {students.length} students</div>
 </div>
 <div style={{display:"flex",gap:6}}>
-{marcusIsRed&&!released&&(<button onClick={dockMarcus} style={{padding:"6px 12px",borderRadius:8,border:"none",background:GREEN,color:"#fff",fontSize:11.5,fontWeight:600,fontFamily:"-apple-system,sans-serif",cursor:"pointer",display:"flex",alignItems:"center",gap:5,boxShadow:"0 2px 8px rgba(76,175,80,.3)"}}><span style={{fontSize:12}}>📱</span>Student Docked Phone</button>)}
-{!released&&(<button onClick={releaseAll} style={{padding:"6px 12px",borderRadius:8,border:`1.5px solid ${NEUTRAL}`,background:"#fff",color:"#777",fontSize:11.5,fontWeight:600,fontFamily:"-apple-system,sans-serif",cursor:"pointer",display:"flex",alignItems:"center",gap:5}}><span style={{fontSize:12}}>🔓</span>Release All — Free Time</button>)}
+{marcusIsRed&&!released&&(<button onClick={dockMarcus} className={tutStep===1?"tutorial-pulse":undefined} style={{padding:"6px 12px",borderRadius:8,border:"none",background:GREEN,color:"#fff",fontSize:11.5,fontWeight:600,fontFamily:"-apple-system,sans-serif",cursor:"pointer",display:"flex",alignItems:"center",gap:5,boxShadow:"0 2px 8px rgba(76,175,80,.3)"}}><span style={{fontSize:12}}>📱</span>Student Docked Phone</button>)}
+{!released&&(<button onClick={releaseAll} className={tutStep===4?"tutorial-pulse":undefined} style={{padding:"6px 12px",borderRadius:8,border:`1.5px solid ${NEUTRAL}`,background:"#fff",color:"#777",fontSize:11.5,fontWeight:600,fontFamily:"-apple-system,sans-serif",cursor:"pointer",display:"flex",alignItems:"center",gap:5}}><span style={{fontSize:12}}>🔓</span>Release All — Free Time</button>)}
 {released&&(<button onClick={resetDemo} style={{padding:"6px 12px",borderRadius:8,border:"1px solid #E0E0E0",background:"#fff",color:"#aaa",fontSize:11,fontWeight:500,fontFamily:"-apple-system,sans-serif",cursor:"pointer"}}>↺ Reset Demo</button>)}
 </div>
 </div>
@@ -171,7 +204,7 @@ return(
 {rows.map((row,ri)=>(
 <div key={ri} style={{display:"grid",gridTemplateColumns:"repeat(6,1fr)",gap:4,flex:1}}>
 {row.map(s=>(
-<Tile key={s.id} s={s} onClick={s.status==="red"?()=>setPopup(s):undefined}/>
+<Tile key={s.id} s={s} onClick={s.status==="red"?()=>openPopup(s):undefined} pulse={tutStep===2&&s.id===22}/>
 ))}
 </div>
 ))}
@@ -188,7 +221,7 @@ return(
 
 </div>
 
-{popup&&<ReasonPopup student={popup} onSelect={(reason)=>releaseStudent(popup.id,reason)} onClose={()=>setPopup(null)}/>}
+{popup&&<ReasonPopup student={popup} onSelect={(reason)=>releaseStudent(popup.id,reason)} onClose={()=>setPopup(null)} pulseReason={tutStep===3?"Absent":null}/>}
 </div>
 )}
 

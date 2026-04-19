@@ -12,6 +12,16 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html,body,#root{height:100%;overflow:hidden}
 body{background:#F5F5F5;font-family:-apple-system,sans-serif}
+@keyframes tutorialPulse {
+  0%,100% { outline-color: rgba(139,154,123,.4); }
+  50%     { outline-color: rgba(139,154,123,1); }
+}
+.tutorial-pulse {
+  outline: 3px solid rgba(139,154,123,.4);
+  outline-offset: 3px;
+  border-radius: 6px;
+  animation: tutorialPulse 1.2s ease-in-out infinite;
+}
 </style>
 </head>
 <body>
@@ -120,24 +130,50 @@ return(<div style={{display:"flex",flexDirection:"column",gap:8,flex:1,overflow:
 </div>
 </div>)}
 
-function ClassCard({c,onClick}){const isA=c.status==="alert",isF=c.status==="free-time";const pct=c.red+c.docked>0?Math.round((c.docked/(c.docked+c.red))*100):100;return(<div onClick={onClick} style={{background:"#fff",border:`1.5px solid ${isA?RED+"44":isF?NEUTRAL+"44":GREEN+"33"}`,borderRadius:10,padding:"10px 12px",display:"flex",flexDirection:"column",gap:6,cursor:"pointer",transition:"all .2s"}} onMouseEnter={e=>e.currentTarget.style.boxShadow="0 2px 10px rgba(0,0,0,.08)"} onMouseLeave={e=>e.currentTarget.style.boxShadow="none"}><div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}><div><div style={{fontSize:12.5,fontWeight:700,color:TEXT,fontFamily:"'DM Sans',sans-serif"}}>{c.teacher}</div><div style={{fontSize:10,color:"#aaa",marginTop:1}}>Rm {c.room} · {c.subject}</div></div><div style={{padding:"2px 8px",borderRadius:10,fontSize:11,fontWeight:700,fontFamily:"'DM Sans',sans-serif",background:isA?RED_BG:isF?NEUTRAL_BG:GREEN_BG,color:isA?RED:isF?NEUTRAL:GREEN}}>{isF?"Free":`${pct}%`}</div></div><CompBar g={c.docked} r={c.red} n={c.neutral} total={c.students}/><div style={{display:"flex",justifyContent:"space-between",fontSize:9,color:"#aaa"}}><span>{c.docked} docked</span>{c.red>0&&<span style={{color:RED,fontWeight:600}}>{c.red} not docked</span>}{c.neutral>0&&<span>{c.neutral} released</span>}<span>{c.students} total</span></div></div>)}
+function ClassCard({c,onClick,pulse}){const isA=c.status==="alert",isF=c.status==="free-time";const pct=c.red+c.docked>0?Math.round((c.docked/(c.docked+c.red))*100):100;return(<div onClick={onClick} className={pulse?"tutorial-pulse":undefined} style={{background:"#fff",border:`1.5px solid ${isA?RED+"44":isF?NEUTRAL+"44":GREEN+"33"}`,borderRadius:10,padding:"10px 12px",display:"flex",flexDirection:"column",gap:6,cursor:"pointer",transition:"all .2s"}} onMouseEnter={e=>e.currentTarget.style.boxShadow="0 2px 10px rgba(0,0,0,.08)"} onMouseLeave={e=>e.currentTarget.style.boxShadow="none"}><div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}><div><div style={{fontSize:12.5,fontWeight:700,color:TEXT,fontFamily:"'DM Sans',sans-serif"}}>{c.teacher}</div><div style={{fontSize:10,color:"#aaa",marginTop:1}}>Rm {c.room} · {c.subject}</div></div><div style={{padding:"2px 8px",borderRadius:10,fontSize:11,fontWeight:700,fontFamily:"'DM Sans',sans-serif",background:isA?RED_BG:isF?NEUTRAL_BG:GREEN_BG,color:isA?RED:isF?NEUTRAL:GREEN}}>{isF?"Free":`${pct}%`}</div></div><CompBar g={c.docked} r={c.red} n={c.neutral} total={c.students}/><div style={{display:"flex",justifyContent:"space-between",fontSize:9,color:"#aaa"}}><span>{c.docked} docked</span>{c.red>0&&<span style={{color:RED,fontWeight:600}}>{c.red} not docked</span>}{c.neutral>0&&<span>{c.neutral} released</span>}<span>{c.students} total</span></div></div>)}
 
-function TeacherCard({t,onClick}){const isLow=t.avg<80,isMid=t.avg>=80&&t.avg<95;const color=isLow?RED:isMid?ORANGE:GREEN;const bg=isLow?RED_BG:isMid?ORANGE_BG:GREEN_BG;const ti=t.periods.reduce((a,p)=>a+p.inc.length,0);return(<div onClick={onClick} style={{background:"#fff",border:"1.5px solid #E8E8E8",borderRadius:10,padding:"10px 12px",cursor:"pointer",display:"flex",flexDirection:"column",gap:6,transition:"border-color .2s"}} onMouseEnter={e=>e.currentTarget.style.borderColor=color+"66"} onMouseLeave={e=>e.currentTarget.style.borderColor="#E8E8E8"}><div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}><div><div style={{fontSize:12.5,fontWeight:700,color:TEXT,fontFamily:"'DM Sans',sans-serif"}}>{t.name}</div><div style={{fontSize:10,color:"#aaa",marginTop:1}}>Rm {t.room} · {t.periods.length} periods</div></div><div style={{padding:"2px 8px",borderRadius:10,fontSize:11.5,fontWeight:700,fontFamily:"'DM Sans',sans-serif",background:bg,color}}>{t.avg}%</div></div><CompBar g={t.tD} r={t.tR} n={t.tN} total={t.tS}/><div style={{display:"flex",justifyContent:"space-between",fontSize:9,color:"#aaa"}}><span>{t.tD} docked</span>{t.tR>0&&<span style={{color:RED,fontWeight:600}}>{t.tR} not docked</span>}<span>{t.tN} released</span>{ti>0&&<span style={{color:ORANGE,fontWeight:600}}>{ti} inc.</span>}</div></div>)}
+function TeacherCard({t,onClick,pulse}){const isLow=t.avg<80,isMid=t.avg>=80&&t.avg<95;const color=isLow?RED:isMid?ORANGE:GREEN;const bg=isLow?RED_BG:isMid?ORANGE_BG:GREEN_BG;const ti=t.periods.reduce((a,p)=>a+p.inc.length,0);return(<div onClick={onClick} className={pulse?"tutorial-pulse":undefined} style={{background:"#fff",border:"1.5px solid #E8E8E8",borderRadius:10,padding:"10px 12px",cursor:"pointer",display:"flex",flexDirection:"column",gap:6,transition:"border-color .2s"}} onMouseEnter={e=>e.currentTarget.style.borderColor=color+"66"} onMouseLeave={e=>e.currentTarget.style.borderColor="#E8E8E8"}><div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}><div><div style={{fontSize:12.5,fontWeight:700,color:TEXT,fontFamily:"'DM Sans',sans-serif"}}>{t.name}</div><div style={{fontSize:10,color:"#aaa",marginTop:1}}>Rm {t.room} · {t.periods.length} periods</div></div><div style={{padding:"2px 8px",borderRadius:10,fontSize:11.5,fontWeight:700,fontFamily:"'DM Sans',sans-serif",background:bg,color}}>{t.avg}%</div></div><CompBar g={t.tD} r={t.tR} n={t.tN} total={t.tS}/><div style={{display:"flex",justifyContent:"space-between",fontSize:9,color:"#aaa"}}><span>{t.tD} docked</span>{t.tR>0&&<span style={{color:RED,fontWeight:600}}>{t.tR} not docked</span>}<span>{t.tN} released</span>{ti>0&&<span style={{color:ORANGE,fontWeight:600}}>{ti} inc.</span>}</div></div>)}
 
 function PeriodRow({p}){const color=p.pct===100?GREEN:p.pct>=90?ORANGE:RED;const bg=p.pct===100?GREEN_BG:p.pct>=90?ORANGE_BG:RED_BG;return(<div style={{background:"#FAFAFA",borderRadius:8,padding:"8px 10px",display:"flex",flexDirection:"column",gap:4}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><span style={{fontSize:11,fontWeight:700,color:TEXT}}>Period {p.p}</span><span style={{fontSize:10,color:"#aaa",marginLeft:6}}>{p.sub} · {p.s} students</span></div><div style={{padding:"2px 7px",borderRadius:8,fontSize:10.5,fontWeight:700,background:bg,color}}>{p.pct}%</div></div><CompBar g={p.d} r={p.r} n={p.n} total={p.s} h={5}/>{p.inc.length>0&&(<div style={{display:"flex",flexDirection:"column",gap:3,marginTop:2}}>{p.inc.map((inc,i)=>(<div key={i} style={{display:"flex",alignItems:"center",gap:6,background:inc.type==="Never docked"?RED_BG:inc.type==="Late dock"?ORANGE_BG:NEUTRAL_BG,borderRadius:5,padding:"4px 8px"}}><span style={{fontSize:8}}>{inc.type==="Never docked"?"🔴":inc.type==="Late dock"?"🟡":"⚪"}</span><span style={{fontSize:9.5,fontWeight:600,color:TEXT}}>{inc.stu}</span><span style={{fontSize:9,color:"#999"}}>{inc.type} · {inc.t}</span><span style={{fontSize:8.5,color:"#aaa",marginLeft:"auto"}}>{inc.det}</span></div>))}</div>)}</div>)}
 
 function TeacherDetail({teacher,onBack}){return(<div style={{display:"flex",flexDirection:"column",gap:8,flex:1,overflow:"auto"}}><div style={{display:"flex",alignItems:"center",gap:8,flexShrink:0}}><button onClick={onBack} style={{padding:"4px 10px",borderRadius:6,border:"1px solid #E0E0E0",background:"#fff",color:"#888",fontSize:11,cursor:"pointer"}}>← Back</button><div style={{flex:1}}><div style={{fontSize:15,fontWeight:700,color:TEXT,fontFamily:"'DM Sans',sans-serif"}}>{teacher.name}</div><div style={{fontSize:10,color:"#aaa"}}>Rm {teacher.room} · Today · {teacher.periods.length} periods</div></div><div style={{padding:"3px 10px",borderRadius:10,fontSize:13,fontWeight:700,fontFamily:"'DM Sans',sans-serif",background:teacher.avg<80?RED_BG:teacher.avg<95?ORANGE_BG:GREEN_BG,color:teacher.avg<80?RED:teacher.avg<95?ORANGE:GREEN}}>{teacher.avg}% avg</div></div><CompBar g={teacher.tD} r={teacher.tR} n={teacher.tN} total={teacher.tS} h={8}/><div style={{display:"flex",flexDirection:"column",gap:6}}>{teacher.periods.map((p,i)=><PeriodRow key={i} p={p}/>)}</div></div>)}
 
+function TutorialPanel({step,total,texts,completion,onSkip,onClose}){
+if(step===0||step==null)return null;
+const isDone=step>total;
+const text=isDone?completion:texts[step];
+return(<div style={{position:"fixed",top:12,left:"50%",transform:"translateX(-50%)",width:420,maxWidth:"calc(100vw - 24px)",background:"#6B7D5E",color:"#fff",fontFamily:"'DM Sans',sans-serif",padding:12,borderRadius:10,zIndex:200,boxShadow:"0 6px 22px rgba(0,0,0,.3)"}}>
+<div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:".09em",color:"rgba(255,255,255,.65)",marginBottom:5}}>{isDone?"Complete":`Step ${step} of ${total}`}</div>
+<div style={{fontSize:13,lineHeight:1.45,color:"#fff",paddingRight:92}}>{text}</div>
+<button onClick={isDone?onClose:onSkip} style={{position:"absolute",bottom:8,right:12,fontSize:11,fontWeight:500,color:"rgba(255,255,255,.6)",cursor:"pointer",background:"none",border:"none",fontFamily:"'DM Sans',sans-serif",padding:"2px 4px"}} onMouseEnter={e=>e.currentTarget.style.color="rgba(255,255,255,.95)"} onMouseLeave={e=>e.currentTarget.style.color="rgba(255,255,255,.6)"}>{isDone?"Close":"Skip tutorial"}</button>
+</div>);
+}
+
+const TUT_TEXT={
+1:"You're the dean. Every classroom is live. Most are green — but Room 322 needs attention. Click it.",
+2:"14 students aren't docked in Mr. Thompson's Biology class. But is this a pattern? Click 'Daily Report' tab.",
+3:"Click Mr. Thompson's card to see his full day.",
+4:"Period 3 dropped to 53% — full day 72%. That's data, not a vague morning-after conversation.",
+};
+const TUT_DONE="Period 3 dropped to 53% — full day 72%. That's data, not a vague morning-after conversation.";
+
 function App(){
-const[tab,setTab]=useState("realtime");
-const[drillClass,setDrillClass]=useState(null);
-const[selTeacher,setSelTeacher]=useState(null);
+const[tab,setTabRaw]=useState("realtime");
+const[drillClass,setDrillClassRaw]=useState(null);
+const[selTeacher,setSelTeacherRaw]=useState(null);
+const[tutStep,setTutStep]=useState(1);
 
 const tD=CLS.reduce((a,c)=>a+c.docked,0),tR=CLS.reduce((a,c)=>a+c.red,0);
 const oP=tD+tR>0?Math.round((tD/(tD+tR))*100):100;
 const alerts=CLS.filter(c=>c.status==="alert").length;
 
+const setTab=(t)=>{setTabRaw(t);setDrillClassRaw(null);setSelTeacherRaw(null);if(tutStep===2&&t==="daily")setTutStep(3)};
+const setDrillClass=(c)=>{setDrillClassRaw(c);if(tutStep===1&&c&&c.id===6)setTutStep(2)};
+const setSelTeacher=(t)=>{setSelTeacherRaw(t);if(tutStep===3&&t&&t.name==="Mr. Thompson")setTutStep(4)};
+const skipTut=()=>setTutStep(0);
+
 return(<div style={{height:"100vh",display:"flex",flexDirection:"column",background:"#F5F5F5",overflow:"hidden"}}>
+<TutorialPanel step={tutStep} total={3} texts={TUT_TEXT} completion={TUT_DONE} onSkip={skipTut} onClose={skipTut}/>
 
 {/* Nav */}
 <div style={{background:"#fff",borderBottom:"1px solid #E8E8E8",padding:"8px 24px",display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0}}>
@@ -161,7 +197,7 @@ return(<div style={{height:"100vh",display:"flex",flexDirection:"column",backgro
 {/* Tabs */}
 <div style={{display:"flex",gap:3,background:"#EEE",borderRadius:8,padding:2,width:"fit-content",flexShrink:0}}>
 {[{id:"realtime",label:"🟢 Real-Time"},{id:"daily",label:"📊 Daily Report"}].map(t=>(
-<button key={t.id} onClick={()=>{setTab(t.id);setDrillClass(null);setSelTeacher(null)}} style={{padding:"5px 14px",borderRadius:6,border:"none",background:tab===t.id?"#fff":"transparent",color:tab===t.id?TEXT:"#999",fontSize:11.5,fontWeight:600,fontFamily:"-apple-system,sans-serif",cursor:"pointer",boxShadow:tab===t.id?"0 1px 3px rgba(0,0,0,.06)":"none"}}>{t.label}</button>
+<button key={t.id} onClick={()=>{setTab(t.id);setDrillClass(null);setSelTeacher(null)}} className={tutStep===2&&t.id==="daily"?"tutorial-pulse":undefined} style={{padding:"5px 14px",borderRadius:6,border:"none",background:tab===t.id?"#fff":"transparent",color:tab===t.id?TEXT:"#999",fontSize:11.5,fontWeight:600,fontFamily:"-apple-system,sans-serif",cursor:"pointer",boxShadow:tab===t.id?"0 1px 3px rgba(0,0,0,.06)":"none"}}>{t.label}</button>
 ))}
 </div>
 
@@ -175,7 +211,7 @@ return(<div style={{height:"100vh",display:"flex",flexDirection:"column",backgro
 {[{n:CLS.filter(c=>c.docked+c.red>0).length,l:"Active",c:SAGE},{n:`${oP}%`,l:"Compliance",c:oP<80?RED:GREEN},{n:tD,l:"Docked",c:GREEN},{n:tR,l:"Not Docked",c:tR>0?RED:NEUTRAL}].map((x,i)=>(<div key={i} style={{flex:1,background:"#fff",borderRadius:8,padding:"7px 10px",textAlign:"center"}}><div style={{fontSize:18,fontWeight:700,color:x.c,fontFamily:"'DM Sans',sans-serif"}}>{x.n}</div><div style={{fontSize:8,color:"#aaa"}}>{x.l}</div></div>))}
 </div>
 <div style={{flex:1,display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:8,overflow:"auto"}}>
-{CLS.map(c=><ClassCard key={c.id} c={c} onClick={()=>setDrillClass(c)}/>)}
+{CLS.map(c=><ClassCard key={c.id} c={c} onClick={()=>setDrillClass(c)} pulse={tutStep===1&&c.id===6}/>)}
 </div>
 </>)}
 
@@ -188,7 +224,7 @@ return(<div style={{height:"100vh",display:"flex",flexDirection:"column",backgro
 {tab==="daily"&&!selTeacher&&(<>
 <div style={{flexShrink:0}}><div style={{fontSize:17,fontWeight:700,color:TEXT,fontFamily:"'DM Sans',sans-serif"}}>Daily Report</div><div style={{fontSize:10,color:"#aaa"}}>Tuesday, March 24, 2026 · By teacher · Click for breakdown</div></div>
 <div style={{flex:1,display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:8,overflow:"auto"}}>
-{TEACHERS_DAILY.map((t,i)=><TeacherCard key={i} t={t} onClick={()=>setSelTeacher(t)}/>)}
+{TEACHERS_DAILY.map((t,i)=><TeacherCard key={i} t={t} onClick={()=>setSelTeacher(t)} pulse={tutStep===3&&t.name==="Mr. Thompson"}/>)}
 </div>
 </>)}
 
