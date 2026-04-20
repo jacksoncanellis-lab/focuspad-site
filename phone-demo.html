@@ -13,14 +13,20 @@
 body { background: #0C0C0C; overflow-x: hidden; }
 @keyframes sp { to { transform: rotate(360deg); } }
 @keyframes tutorialPulse {
-  0%, 100% { outline-color: rgba(139,154,123,.4); }
-  50%     { outline-color: rgba(139,154,123,1); }
+  0%, 100% {
+    box-shadow: 0 0 14px 4px rgba(34,197,94,.75), 0 0 0 3px rgba(34,197,94,.5);
+    transform: scale(1.0);
+  }
+  50% {
+    box-shadow: 0 0 32px 10px rgba(34,197,94,.95), 0 0 0 3px rgba(34,197,94,.85);
+    transform: scale(1.04);
+  }
 }
 .tutorial-pulse {
-  outline: 3px solid rgba(139,154,123,.4);
+  outline: 2.5px solid rgba(34,197,94,.8);
   outline-offset: 3px;
   border-radius: 6px;
-  animation: tutorialPulse 1.2s ease-in-out infinite;
+  animation: tutorialPulse 1.3s ease-in-out infinite;
 }
 </style>
 </head>
