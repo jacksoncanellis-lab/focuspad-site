@@ -1,172 +1,888 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FocusPad — Live Demo</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FocusPad — Product Dossier</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          paper:     '#F0EBDC',
+          'paper-2': '#E8E2D0',
+          'paper-3': '#DDD6BF',
+          ink:       '#1A1F2C',
+          'ink-2':   '#2B3142',
+          graphite:  '#4A4D52',
+          'graphite-soft':'#7C7E80',
+          rust:      '#C8442C',
+          'rust-2':  '#A8341E',
+          mustard:   '#D4A437',
+          mint:      '#A8B89B',
+          gridline:  '#B8A98A',
+        },
+        fontFamily: {
+          mono: ['"IBM Plex Mono"', 'ui-monospace', 'monospace'],
+          sans: ['"IBM Plex Sans"', 'system-ui', 'sans-serif'],
+          hand: ['"Caveat"', 'cursive'],
+        },
+      }
+    }
+  }
+</script>
+
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  background: #F5F5F5;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  color: #2D2D2D;
-  -webkit-font-smoothing: antialiased;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-:root {
-  --sage: #8B9A7B;
-  --sage-dark: #6B7D5E;
-  --sage-deeper: #4A5C3E;
-  --sage-bg: rgba(139, 154, 123, 0.08);
-  --green: #4CAF50;
-  --green-bg: #E8F5E9;
-  --red: #E53935;
-  --red-bg: #FFEBEE;
-  --orange: #FB8C00;
-  --orange-bg: #FFF3E0;
-  --neutral: #BDBDBD;
-  --neutral-bg: #F5F5F5;
-  --text: #2D2D2D;
-  --text-muted: #888;
-  --text-light: #aaa;
-  --border: #E8E8E8;
-}
-.nav { background: #fff; border-bottom: 1px solid var(--border); padding: 12px 28px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
-.logo-mark { width: 28px; height: 28px; border-radius: 7px; background: var(--sage); display: flex; align-items: center; justify-content: center; }
-.logo-mark svg { width: 13px; height: 13px; }
-.logo-text { font-family: 'DM Sans', sans-serif; font-size: 17px; font-weight: 700; color: var(--text); }
-.logo-divider { width: 1px; height: 18px; background: #E0E0E0; margin: 0 4px; }
-.logo-page { font-size: 12px; color: var(--text-muted); font-weight: 500; }
-.nav-right { display: flex; align-items: center; gap: 10px; }
-.live-tag { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; background: var(--green-bg); border-radius: 14px; font-size: 11px; font-weight: 600; color: var(--green); font-family: 'DM Sans', sans-serif; }
-.live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); animation: pulse 2s ease-in-out infinite; }
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-.container { max-width: 1100px; margin: 0 auto; padding: 0 28px; flex: 1; display: flex; align-items: center; }
-.hero { padding: 56px 0 40px; }
-.hero h1 { font-family: 'DM Sans', sans-serif; font-size: clamp(30px, 4vw, 42px); font-weight: 700; color: var(--text); letter-spacing: -0.025em; line-height: 1.1; margin-bottom: 14px; }
-.hero h1 .accent { color: var(--sage); }
-.hero p { font-size: 16px; line-height: 1.55; color: var(--text-muted); max-width: 640px; margin-bottom: 24px; }
-.hero-meta { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 8px; }
-.hero-chip { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; background: #fff; border: 1px solid var(--border); border-radius: 7px; font-size: 12px; font-weight: 500; color: var(--text-muted); font-family: 'DM Sans', sans-serif; }
-.hero-chip .chip-num { color: var(--text); font-weight: 700; }
-.hero-chip .chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
-.demos-section { padding: 40px 0; width: 100%; }
-.demos-label { font-size: 11px; font-weight: 700; color: var(--sage-dark); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 18px; font-family: 'DM Sans', sans-serif; }
-.demos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-@media (max-width: 900px) { .demos-grid { grid-template-columns: 1fr; gap: 14px; } }
-.demo-card { background: #fff; border: 1.5px solid var(--border); border-radius: 14px; padding: 0; overflow: hidden; cursor: pointer; transition: all 0.2s ease; text-decoration: none; color: inherit; display: flex; flex-direction: column; position: relative; }
-.demo-card:hover { border-color: var(--sage); transform: translateY(-3px); box-shadow: 0 12px 30px -8px rgba(139, 154, 123, 0.25); }
-.demo-preview { aspect-ratio: 16 / 11; background: #F5F5F5; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; border-bottom: 1px solid var(--border); }
-.prev-phone-bg { width: 100%; height: 100%; background: linear-gradient(145deg, #0C0C0C 0%, #13131F 50%, #0C0C0C 100%); display: flex; align-items: center; justify-content: center; }
-.prev-phone { width: 90px; height: 180px; background: #1A1814; border-radius: 18px; padding: 4px; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4); }
-.prev-phone-screen { width: 100%; height: 100%; background: linear-gradient(160deg, #EBE8E0 0%, #D0CCB8 100%); border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; }
-.prev-phone-lock { width: 32px; height: 32px; border-radius: 50%; background: var(--sage); display: flex; align-items: center; justify-content: center; }
-.prev-phone-lock svg { width: 16px; height: 16px; }
-.prev-phone-text { font-family: 'DM Sans', sans-serif; font-size: 8px; font-weight: 700; color: #3A3A2E; }
-.prev-phone-sub { font-family: 'DM Sans', sans-serif; font-size: 6.5px; color: var(--sage-dark); }
-.prev-teacher { width: 100%; height: 100%; padding: 18px; display: flex; align-items: center; justify-content: center; }
-.prev-desk-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; width: 100%; max-width: 220px; }
-.prev-desk { aspect-ratio: 1; border-radius: 3px; border: 1px solid; }
-.prev-desk.g { background: var(--green-bg); border-color: var(--green); }
-.prev-desk.r { background: var(--red-bg); border-color: var(--red); }
-.prev-dean { width: 100%; height: 100%; padding: 16px; display: flex; align-items: center; justify-content: center; }
-.prev-rooms { display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; width: 100%; max-width: 220px; }
-.prev-room { background: #fff; border: 1px solid var(--border); border-radius: 4px; padding: 6px; display: flex; flex-direction: column; gap: 3px; }
-.prev-room.warn { border-color: var(--red); background: var(--red-bg); }
-.prev-room-top { display: flex; justify-content: space-between; align-items: center; }
-.prev-room-num { font-family: 'DM Sans', sans-serif; font-size: 8px; font-weight: 700; color: var(--text); }
-.prev-room-pct { font-family: 'DM Sans', sans-serif; font-size: 7px; font-weight: 700; }
-.prev-room.warn .prev-room-pct { color: var(--red); }
-.prev-room:not(.warn) .prev-room-pct { color: var(--green); }
-.prev-room-bar { height: 2px; background: #EEE; border-radius: 1px; overflow: hidden; }
-.prev-room-bar-fill { height: 100%; background: var(--green); }
-.prev-room.warn .prev-room-bar-fill { background: var(--red); }
-.demo-card-body { padding: 18px 20px 20px; flex: 1; display: flex; flex-direction: column; }
-.demo-card-num { font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 700; color: var(--sage); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; }
-.demo-card h3 { font-family: 'DM Sans', sans-serif; font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 6px; letter-spacing: -0.01em; }
-.demo-card p { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px; flex: 1; }
-.demo-card-cta { display: inline-flex; align-items: center; gap: 6px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 700; color: var(--sage-deeper); letter-spacing: -0.005em; }
-.demo-card-cta .arrow { transition: transform 0.2s ease; display: inline-block; }
-.demo-card:hover .demo-card-cta .arrow { transform: translateX(3px); }
-.evidence-section { padding: 32px 0 48px; border-top: 1px solid var(--border); margin-top: 20px; }
-.evidence-label { font-size: 11px; font-weight: 700; color: var(--sage-dark); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 20px; font-family: 'DM Sans', sans-serif; }
-.evidence-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
-@media (max-width: 760px) { .evidence-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 440px) { .evidence-grid { grid-template-columns: 1fr; } }
-.ev-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
-.ev-num { font-family: 'DM Sans', sans-serif; font-size: 24px; font-weight: 700; color: var(--text); letter-spacing: -0.02em; line-height: 1; margin-bottom: 8px; }
-.ev-num .ev-small { font-size: 14px; color: var(--sage); font-weight: 500; }
-.ev-text { font-size: 11.5px; color: var(--text-muted); line-height: 1.45; }
-.foot { padding: 28px 0 48px; border-top: 1px solid var(--border); }
-.foot-inner { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 14px; align-items: center; }
-.foot-left { display: flex; align-items: center; gap: 10px; }
-.foot-logo { width: 22px; height: 22px; border-radius: 5px; background: var(--sage); display: flex; align-items: center; justify-content: center; }
-.foot-logo svg { width: 10px; height: 10px; }
-.foot-text { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
-.foot-text strong { color: var(--text); font-weight: 600; font-family: 'DM Sans', sans-serif; }
-.foot-contact { font-size: 12px; color: var(--sage-dark); font-weight: 600; font-family: 'DM Sans', sans-serif; text-decoration: none; }
-.foot-contact:hover { color: var(--sage-deeper); }
+  html { scroll-behavior: smooth; }
+  body {
+    background: #F0EBDC;
+    color: #1A1F2C;
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* ============ PAPER GRID BACKGROUND ============ */
+  .grid-paper {
+    background-color: #F0EBDC;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(184,169,138,0.45) 1px, transparent 0);
+    background-size: 24px 24px;
+    background-position: 0 0;
+  }
+  .grid-paper-faint {
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(184,169,138,0.25) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+
+  /* paper grain */
+  .grain::after {
+    content: '';
+    position: absolute; inset: 0;
+    pointer-events: none;
+    opacity: 0.08;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    z-index: 1;
+  }
+
+  /* ============ TYPE ============ */
+  .display-mono {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 0.94;
+  }
+  .display-mono-light {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 300;
+    letter-spacing: -0.045em;
+    line-height: 0.94;
+  }
+  .label-mono {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .hand {
+    font-family: 'Caveat', cursive;
+    font-weight: 400;
+  }
+
+  /* ============ RUBBER STAMP ============ */
+  .stamp {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #C8442C;
+    border: 2.5px solid #C8442C;
+    padding: 6px 14px;
+    transform: rotate(-3.5deg);
+    position: relative;
+    background: transparent;
+  }
+  .stamp::before {
+    content: '';
+    position: absolute; inset: -3px;
+    border: 1px dashed #C8442C;
+    opacity: 0.4;
+    pointer-events: none;
+  }
+  .stamp::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 50' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence baseFrequency='1.5' numOctaves='1'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.4'/></svg>");
+    mix-blend-mode: screen;
+    pointer-events: none;
+    opacity: 0.6;
+  }
+
+  /* ============ HAND-DRAWN STROKE FILTER ============ */
+  /* Applied to SVGs to give imperfect, ink-on-paper feel */
+  .roughen {
+    filter: url(#roughen-filter);
+  }
+
+  /* ============ MARGINALIA ============ */
+  .marginalia {
+    font-family: 'Caveat', cursive;
+    font-weight: 400;
+    color: #C8442C;
+    font-size: 22px;
+    line-height: 1.15;
+    transform: rotate(-2deg);
+    display: inline-block;
+  }
+  .marginalia-ink {
+    font-family: 'Caveat', cursive;
+    color: #1A1F2C;
+  }
+
+  /* ============ HAND UNDERLINE ============ */
+  .hand-under {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 8'><path d='M2 5 Q 50 2 100 4 T 198 5' fill='none' stroke='%23C8442C' stroke-width='2' stroke-linecap='round'/></svg>");
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 100% 8px;
+    padding-bottom: 6px;
+  }
+  .hand-under-ink {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 8'><path d='M2 5 Q 50 2 100 4 T 198 5' fill='none' stroke='%231A1F2C' stroke-width='2' stroke-linecap='round'/></svg>");
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 100% 8px;
+    padding-bottom: 6px;
+  }
+
+  /* ============ CROSSED OUT ============ */
+  .struck { text-decoration: line-through; text-decoration-color: #C8442C; text-decoration-thickness: 2px; opacity: 0.6; }
+
+  /* ============ HAND-DRAWN BUTTON ============ */
+  .ink-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 12px 22px;
+    background: #1A1F2C;
+    color: #F0EBDC;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 13px;
+    transition: transform .2s ease, box-shadow .2s ease;
+    border: 0;
+  }
+  .ink-btn:hover { transform: translate(-2px,-2px); box-shadow: 4px 4px 0 #C8442C; }
+  .ink-btn-outline {
+    background: transparent;
+    color: #1A1F2C;
+    border: 2px solid #1A1F2C;
+    padding: 10px 20px;
+  }
+  .ink-btn-outline:hover { background: #1A1F2C; color: #F0EBDC; }
+
+  /* ============ DIMENSION LINE COMPONENTS ============ */
+  .dim-tick {
+    width: 2px;
+    background: #1A1F2C;
+  }
+
+  /* ============ REVEAL ============ */
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1); }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  .d1 { transition-delay: 80ms; }
+  .d2 { transition-delay: 160ms; }
+  .d3 { transition-delay: 240ms; }
+
+  /* ============ DRAWING REVEAL ============ */
+  .draw-path {
+    stroke-dasharray: 1500;
+    stroke-dashoffset: 1500;
+    transition: stroke-dashoffset 2.4s cubic-bezier(.22,1,.36,1);
+  }
+  .reveal.in .draw-path { stroke-dashoffset: 0; }
+
+  /* ============ TINY HAND ARROW ============ */
+  .arrow-svg path { stroke: #C8442C; stroke-width: 1.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* ============ LINK STYLES ============ */
+  .ink-link {
+    position: relative;
+    color: #1A1F2C;
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 1px;
+    transition: color .2s ease;
+  }
+  .ink-link:hover { color: #C8442C; }
+
+  .nav-link {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: #1A1F2C;
+    text-decoration: none;
+    position: relative;
+    padding-bottom: 2px;
+  }
+  .nav-link:hover { color: #C8442C; }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -2px;
+    width: 100%; height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform .35s cubic-bezier(.22,1,.36,1);
+  }
+  .nav-link:hover::after { transform: scaleX(1); transform-origin: left; }
+
+  /* dotted dimension line */
+  .dim-line {
+    background-image: linear-gradient(to right, #1A1F2C 50%, transparent 0%);
+    background-size: 6px 1px;
+    background-repeat: repeat-x;
+    background-position: 0 50%;
+  }
+
+  /* highlighter mark */
+  .highlight {
+    background: linear-gradient(180deg, transparent 55%, #D4A43755 55%, #D4A43755 92%, transparent 92%);
+    padding: 0 4px;
+  }
+
+  /* corner registration mark */
+  .reg-mark::before {
+    content: '+';
+    position: absolute;
+    font-family: 'IBM Plex Mono', monospace;
+    color: #1A1F2C;
+    font-size: 14px;
+    line-height: 1;
+  }
 </style>
 </head>
+
 <body>
-<nav class="nav">
-  <a href="/" class="logo">
-    <div class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
-    <span class="logo-text">FocusPad</span>
-    <div class="logo-divider"></div>
-    <span class="logo-page">Live Demo</span>
-  </a>
-  <div class="nav-right"><span class="live-tag"><span class="live-dot"></span>Interactive</span></div>
-</nav>
-<div class="container">
-  <section class="demos-section">
-    <div class="demos-grid">
-      <a href="/phone-demo.html" class="demo-card">
-        <div class="demo-preview"><div class="prev-phone-bg"><div class="prev-phone"><div class="prev-phone-screen"><div class="prev-phone-lock"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><div class="prev-phone-text">FocusPad Active</div><div class="prev-phone-sub">AP US History · P3</div></div></div></div></div>
-        <div class="demo-card-body">
-          <div class="demo-card-num">Demo 01</div>
-          <h3>Student phone</h3>
-          <p>What the student sees. Tap to dock the phone, try opening a restricted app, see the FocusPad lock screen.</p>
-          <span class="demo-card-cta">Try the phone demo <span class="arrow">→</span></span>
+
+<!-- ============ Roughen filter (applied to SVG technical drawings) ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="roughen-filter">
+      <feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="3"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.6"/>
+    </filter>
+    <filter id="roughen-light">
+      <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="7"/>
+      <feDisplacementMap in="SourceGraphic" scale="0.8"/>
+    </filter>
+  </defs>
+</svg>
+
+<!-- =========================================================
+     TITLE BLOCK / NAV — like the masthead of a working notebook
+     ========================================================= -->
+<header class="grid-paper relative">
+  <div class="absolute top-3 left-3 w-3 h-3 reg-mark"></div>
+  <div class="absolute top-3 right-3 w-3 h-3 reg-mark"></div>
+
+  <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-14 pt-7 md:pt-9 pb-6">
+
+    <!-- top row: dossier label, date, page -->
+    <div class="flex items-baseline justify-between font-mono text-[11px] tracking-[0.18em] uppercase text-graphite mb-6">
+      <span>FocusPad / Product Dossier</span>
+      <span class="hidden sm:inline">Rev. 04 — 2026</span>
+      <span>p. 01 / 04</span>
+    </div>
+
+    <div class="border-t border-ink/30"></div>
+
+    <!-- main title row -->
+    <div class="flex items-end justify-between gap-6 pt-5">
+      <div class="flex items-end gap-4">
+        <!-- mark -->
+        <div class="hidden sm:block">
+          <svg width="44" height="44" viewBox="0 0 44 44" class="roughen">
+            <rect x="4" y="4" width="36" height="36" fill="none" stroke="#1A1F2C" stroke-width="2"/>
+            <rect x="11" y="11" width="22" height="22" fill="#1A1F2C"/>
+            <circle cx="22" cy="22" r="3" fill="#F0EBDC"/>
+          </svg>
         </div>
-      </a>
-      <a href="/teacher-dashboard.html" class="demo-card">
-        <div class="demo-preview"><div class="prev-teacher"><div class="prev-desk-grid">
-          <div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div>
-          <div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk r"></div><div class="prev-desk g"></div><div class="prev-desk g"></div>
-          <div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div>
-          <div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk r"></div><div class="prev-desk g"></div>
-          <div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div>
-        </div></div></div>
-        <div class="demo-card-body">
-          <div class="demo-card-num">Demo 02</div>
-          <h3>Teacher dashboard</h3>
-          <p>Real-time compliance for every desk. Click a red tile to release a student — absent, no phone, or other.</p>
-          <span class="demo-card-cta">Open teacher dashboard <span class="arrow">→</span></span>
+        <div>
+          <div class="font-mono text-[10px] tracking-[0.2em] uppercase text-graphite mb-1">— A focus tool —</div>
+          <div class="font-mono text-2xl md:text-3xl font-medium text-ink tracking-tight">FocusPad<span class="text-rust">.</span></div>
         </div>
-      </a>
-      <a href="/dean-dashboard.html" class="demo-card">
-        <div class="demo-preview"><div class="prev-dean"><div class="prev-rooms">
-          <div class="prev-room"><div class="prev-room-top"><span class="prev-room-num">Rm 214</span><span class="prev-room-pct">100%</span></div><div class="prev-room-bar"><div class="prev-room-bar-fill" style="width: 100%"></div></div></div>
-          <div class="prev-room"><div class="prev-room-top"><span class="prev-room-num">Rm 108</span><span class="prev-room-pct">100%</span></div><div class="prev-room-bar"><div class="prev-room-bar-fill" style="width: 100%"></div></div></div>
-          <div class="prev-room"><div class="prev-room-top"><span class="prev-room-num">Rm 305</span><span class="prev-room-pct">100%</span></div><div class="prev-room-bar"><div class="prev-room-bar-fill" style="width: 100%"></div></div></div>
-          <div class="prev-room warn"><div class="prev-room-top"><span class="prev-room-num">Rm 322</span><span class="prev-room-pct">53%</span></div><div class="prev-room-bar"><div class="prev-room-bar-fill" style="width: 53%"></div></div></div>
-          <div class="prev-room"><div class="prev-room-top"><span class="prev-room-num">Rm 201</span><span class="prev-room-pct">100%</span></div><div class="prev-room-bar"><div class="prev-room-bar-fill" style="width: 100%"></div></div></div>
-          <div class="prev-room"><div class="prev-room-top"><span class="prev-room-num">Rm 415</span><span class="prev-room-pct">100%</span></div><div class="prev-room-bar"><div class="prev-room-bar-fill" style="width: 100%"></div></div></div>
-        </div></div></div>
-        <div class="demo-card-body">
-          <div class="demo-card-num">Demo 03</div>
-          <h3>Dean dashboard</h3>
-          <p>Live oversight across every classroom. Click into a flagged room to see the period-by-period breakdown.</p>
-          <span class="demo-card-cta">Open dean dashboard <span class="arrow">→</span></span>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-7">
+        <a href="#how" class="nav-link">§01&nbsp;&nbsp;How&nbsp;it&nbsp;works</a>
+        <a href="#privacy" class="nav-link">§02&nbsp;&nbsp;Privacy</a>
+        <a href="#contact" class="nav-link">§03&nbsp;&nbsp;Contact</a>
+      </nav>
+    </div>
+
+    <div class="border-b border-ink/30 mt-5"></div>
+  </div>
+</header>
+
+<!-- =========================================================
+     HERO — opening spread of the notebook
+     ========================================================= -->
+<section class="grid-paper grain relative overflow-hidden">
+  <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-14 pt-12 md:pt-20 pb-20 md:pb-28 relative z-10">
+
+    <div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+
+      <!-- LEFT: TYPE -->
+      <div class="lg:col-span-7 relative">
+
+        <div class="flex items-center gap-4 mb-7 reveal">
+          <span class="label-mono text-rust">Section 00 · Thesis</span>
+          <span class="flex-1 h-px bg-ink/15"></span>
         </div>
+
+        <!-- the headline -->
+        <h1 class="display-mono text-[3.6rem] sm:text-[5rem] lg:text-[7rem] xl:text-[8rem] text-ink mb-8 reveal d1">
+          Phones&nbsp;off.<br>
+          Minds&nbsp;on<span class="text-rust">.</span>
+        </h1>
+
+        <!-- handwritten margin note pointing back at the headline -->
+        <div class="hidden lg:block absolute -left-2 top-[55%]" style="transform: translate(-110%, 0);">
+          <div class="marginalia">
+            ← the<br>whole<br>idea
+          </div>
+        </div>
+
+        <!-- subhead -->
+        <p class="text-lg md:text-xl text-ink-2 leading-relaxed max-w-[36rem] mb-10 reveal d2">
+          FocusPad is an NFC desk pad for your iPhone. Set the phone on the pad and a focus session starts; the apps you've blocked stay blocked until time's up. <span class="hand-under">No willpower required.</span>
+        </p>
+
+        <!-- CTA cluster -->
+        <div class="flex flex-wrap items-center gap-5 mb-10 reveal d3">
+          <a href="#contact" class="ink-btn">
+            <span>Notify me at launch</span>
+            <span>→</span>
+          </a>
+          <a href="#how" class="font-mono text-sm uppercase tracking-[0.1em] ink-link">See how it works</a>
+        </div>
+
+        <!-- spec strip -->
+        <div class="reveal d3 grid grid-cols-3 gap-4 max-w-md font-mono text-[11px] uppercase tracking-[0.1em] text-graphite border-t border-ink/15 pt-5">
+          <div>
+            <div class="text-graphite-soft mb-1">Platform</div>
+            <div class="text-ink">iPhone (iOS&nbsp;17+)</div>
+          </div>
+          <div>
+            <div class="text-graphite-soft mb-1">Hardware</div>
+            <div class="text-ink">Passive NFC pad</div>
+          </div>
+          <div>
+            <div class="text-graphite-soft mb-1">Status</div>
+            <div class="text-rust">Pre-launch</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: TECHNICAL DRAWING -->
+      <div class="lg:col-span-5 relative reveal d2">
+        <div class="relative">
+
+          <!-- title block above drawing -->
+          <div class="flex items-baseline justify-between font-mono text-[10px] uppercase tracking-[0.18em] text-graphite mb-3">
+            <span>Fig. 1 — Reference unit, top view</span>
+            <span>1:1</span>
+          </div>
+
+          <!-- the drawing -->
+          <div class="relative bg-paper-2/40 border border-ink/25 p-5 md:p-7">
+
+            <!-- corner registration marks -->
+            <div class="absolute top-1 left-1 font-mono text-[10px] text-ink/60">+</div>
+            <div class="absolute top-1 right-1 font-mono text-[10px] text-ink/60">+</div>
+            <div class="absolute bottom-1 left-1 font-mono text-[10px] text-ink/60">+</div>
+            <div class="absolute bottom-1 right-1 font-mono text-[10px] text-ink/60">+</div>
+
+            <svg viewBox="0 0 360 380" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
+              <!-- Top dimension line -->
+              <g stroke="#1A1F2C" stroke-width="0.8" fill="none" filter="url(#roughen-light)">
+                <line x1="60" y1="20" x2="60" y2="40"/>
+                <line x1="300" y1="20" x2="300" y2="40"/>
+                <line x1="60" y1="30" x2="160" y2="30"/>
+                <line x1="200" y1="30" x2="300" y2="30"/>
+                <polygon points="60,30 68,26 68,34" fill="#1A1F2C"/>
+                <polygon points="300,30 292,26 292,34" fill="#1A1F2C"/>
+              </g>
+              <text x="180" y="34" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#1A1F2C">100&nbsp;mm</text>
+
+              <!-- The pad (top view) — square with rounded corners -->
+              <rect class="reveal-target" x="60" y="60" width="240" height="240" rx="22" ry="22"
+                    fill="#E8E2D0" stroke="#1A1F2C" stroke-width="2" filter="url(#roughen-light)"/>
+              <!-- Inner bevel -->
+              <rect x="72" y="72" width="216" height="216" rx="16" ry="16"
+                    fill="none" stroke="#1A1F2C" stroke-width="0.6" stroke-dasharray="3 3" opacity="0.5"/>
+
+              <!-- The phone (face-down, dashed because it's "above" the pad) -->
+              <rect x="120" y="92" width="120" height="180" rx="18" ry="18"
+                    fill="#F0EBDC" stroke="#1A1F2C" stroke-width="1.4" stroke-dasharray="5 4" filter="url(#roughen-light)"/>
+              <!-- camera bump (back of phone) -->
+              <rect x="135" y="106" width="40" height="40" rx="9" ry="9"
+                    fill="none" stroke="#1A1F2C" stroke-width="1" stroke-dasharray="3 3"/>
+              <circle cx="146" cy="118" r="4.5" fill="none" stroke="#1A1F2C" stroke-width="1" stroke-dasharray="2 2"/>
+              <circle cx="163" cy="118" r="4.5" fill="none" stroke="#1A1F2C" stroke-width="1" stroke-dasharray="2 2"/>
+              <circle cx="146" cy="135" r="4.5" fill="none" stroke="#1A1F2C" stroke-width="1" stroke-dasharray="2 2"/>
+
+              <!-- NFC waves emanating from the center of the pad -->
+              <g stroke="#C8442C" stroke-width="1.5" fill="none" stroke-linecap="round" filter="url(#roughen-light)">
+                <circle cx="180" cy="180" r="3" fill="#C8442C"/>
+                <path d="M 165 180 A 15 15 0 0 1 195 180"/>
+                <path d="M 155 180 A 25 25 0 0 1 205 180"/>
+                <path d="M 145 180 A 35 35 0 0 1 215 180"/>
+              </g>
+
+              <!-- Callout 1: pad -->
+              <g font-family="IBM Plex Mono" font-size="10" fill="#1A1F2C">
+                <circle cx="42" cy="200" r="9" fill="#1A1F2C"/>
+                <text x="42" y="203.5" text-anchor="middle" fill="#F0EBDC" font-weight="600">1</text>
+                <line x1="51" y1="200" x2="69" y2="200" stroke="#1A1F2C" stroke-width="0.8" filter="url(#roughen-light)"/>
+              </g>
+
+              <!-- Callout 2: phone -->
+              <g font-family="IBM Plex Mono" font-size="10">
+                <circle cx="318" cy="120" r="9" fill="#1A1F2C"/>
+                <text x="318" y="123.5" text-anchor="middle" fill="#F0EBDC" font-weight="600">2</text>
+                <line x1="309" y1="120" x2="245" y2="135" stroke="#1A1F2C" stroke-width="0.8" filter="url(#roughen-light)"/>
+              </g>
+
+              <!-- Callout 3: NFC -->
+              <g font-family="IBM Plex Mono" font-size="10">
+                <circle cx="318" cy="220" r="9" fill="#C8442C"/>
+                <text x="318" y="223.5" text-anchor="middle" fill="#F0EBDC" font-weight="600">3</text>
+                <line x1="309" y1="220" x2="200" y2="190" stroke="#C8442C" stroke-width="0.8" filter="url(#roughen-light)"/>
+              </g>
+
+              <!-- Side dimension -->
+              <g stroke="#1A1F2C" stroke-width="0.8" fill="none" filter="url(#roughen-light)">
+                <line x1="40" y1="60" x2="20" y2="60"/>
+                <line x1="40" y1="300" x2="20" y2="300"/>
+                <line x1="30" y1="60" x2="30" y2="160"/>
+                <line x1="30" y1="200" x2="30" y2="300"/>
+                <polygon points="30,60 26,68 34,68" fill="#1A1F2C"/>
+                <polygon points="30,300 26,292 34,292" fill="#1A1F2C"/>
+              </g>
+              <text x="30" y="184" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#1A1F2C" transform="rotate(-90 30 184)">100&nbsp;mm</text>
+
+              <!-- Cross-section view (small, lower right) -->
+              <g transform="translate(40, 330)">
+                <text x="0" y="0" font-family="IBM Plex Mono" font-size="9" fill="#7C7E80" letter-spacing="0.1em">FIG. 1B — SECTION A-A</text>
+                <rect x="0" y="10" width="280" height="20" rx="4" ry="4" fill="#E8E2D0" stroke="#1A1F2C" stroke-width="1.2" filter="url(#roughen-light)"/>
+                <line x1="0" y1="18" x2="280" y2="18" stroke="#1A1F2C" stroke-width="0.5" stroke-dasharray="2 2"/>
+                <rect x="120" y="14" width="40" height="6" fill="#C8442C" filter="url(#roughen-light)"/>
+                <text x="140" y="11" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#C8442C">NFC&nbsp;chip</text>
+                <text x="285" y="22" font-family="IBM Plex Mono" font-size="8" fill="#7C7E80">6mm</text>
+              </g>
+
+            </svg>
+
+            <!-- Key (legend) below drawing -->
+            <div class="grid grid-cols-3 gap-3 mt-4 pt-4 border-t border-ink/15 font-mono text-[10px] uppercase tracking-[0.06em] text-ink">
+              <div class="flex items-start gap-1.5">
+                <span class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-ink text-paper text-[9px] font-semibold mt-0.5 flex-shrink-0">1</span>
+                <span>Silicone pad</span>
+              </div>
+              <div class="flex items-start gap-1.5">
+                <span class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-ink text-paper text-[9px] font-semibold mt-0.5 flex-shrink-0">2</span>
+                <span>iPhone (face-down)</span>
+              </div>
+              <div class="flex items-start gap-1.5">
+                <span class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-rust text-paper text-[9px] font-semibold mt-0.5 flex-shrink-0">3</span>
+                <span>NFC trigger</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- handwritten annotation pointing at the diagram -->
+          <div class="absolute -right-4 -bottom-12 hidden md:block">
+            <div class="marginalia text-right" style="transform: rotate(3deg);">
+              tap. flip.<br>focus.
+            </div>
+          </div>
+
+          <!-- COMING SOON STAMP -->
+          <div class="absolute -top-6 -right-3 md:-right-6 z-10">
+            <div class="stamp text-sm">Coming<br>Q3&nbsp;2026</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- thick bottom rule -->
+  <div class="border-b-2 border-ink"></div>
+</section>
+
+<!-- =========================================================
+     §01 — THREE THINGS (numbered notebook entries)
+     ========================================================= -->
+<section id="how" class="grid-paper-faint relative" style="background-color:#EBE5D2;">
+  <div class="grain absolute inset-0 pointer-events-none"></div>
+
+  <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-14 py-20 md:py-28 relative">
+
+    <!-- section header -->
+    <div class="flex items-baseline gap-6 mb-16 reveal">
+      <div class="font-mono text-[11px] uppercase tracking-[0.2em] text-graphite">§01</div>
+      <h2 class="display-mono-light text-3xl md:text-5xl text-ink">
+        Three things have to be true.
+      </h2>
+    </div>
+
+    <!-- entries — long form, marginalia style, NOT a 3-column grid -->
+    <div class="space-y-16 md:space-y-20 max-w-5xl">
+
+      <!-- ENTRY 1 -->
+      <div class="grid md:grid-cols-12 gap-6 md:gap-10 items-start reveal">
+        <div class="md:col-span-1 font-mono text-[11px] uppercase tracking-[0.18em] text-rust pt-2">01</div>
+        <div class="md:col-span-7">
+          <h3 class="font-mono text-2xl md:text-3xl text-ink mb-4 tracking-tight">Starting has to be effortless.</h3>
+          <p class="text-lg text-ink-2 leading-relaxed">
+            Set the phone on the pad. The session starts. There is no menu, no timer to fumble with, no decision to talk yourself out of. The hardware <span class="hand-under-ink">is</span> the start button.
+          </p>
+        </div>
+        <div class="md:col-span-4 md:pl-6 md:border-l md:border-ink/20">
+          <!-- tiny diagram -->
+          <svg viewBox="0 0 200 120" class="w-full max-w-[200px] mb-3" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="40" width="80" height="60" rx="8" fill="#DDD6BF" stroke="#1A1F2C" stroke-width="1.4" filter="url(#roughen-light)"/>
+            <rect x="40" y="20" width="35" height="55" rx="6" fill="#F0EBDC" stroke="#1A1F2C" stroke-width="1.2" stroke-dasharray="3 3" filter="url(#roughen-light)"/>
+            <g stroke="#C8442C" stroke-width="1.2" fill="none" stroke-linecap="round">
+              <path d="M 110 70 Q 130 50 155 60"/>
+              <polygon points="155,60 148,55 150,64" fill="#C8442C"/>
+            </g>
+            <text x="160" y="70" font-family="Caveat" font-size="18" fill="#C8442C">tap</text>
+          </svg>
+          <div class="font-mono text-[10px] uppercase tracking-[0.15em] text-graphite-soft">Fig. 01a</div>
+        </div>
+      </div>
+
+      <!-- ENTRY 2 -->
+      <div class="grid md:grid-cols-12 gap-6 md:gap-10 items-start reveal d1">
+        <div class="md:col-span-1 font-mono text-[11px] uppercase tracking-[0.18em] text-rust pt-2">02</div>
+        <div class="md:col-span-7">
+          <h3 class="font-mono text-2xl md:text-3xl text-ink mb-4 tracking-tight">Blocked has to mean blocked.</h3>
+          <p class="text-lg text-ink-2 leading-relaxed">
+            Pick the phone up. Walk to the kitchen. Try to open Instagram. The apps you blocked are gone — wherever the phone goes. Not "shamed with a sad face." Not "delayed by 10 seconds." <span class="highlight">Gone, until time runs out.</span>
+          </p>
+        </div>
+        <div class="md:col-span-4 md:pl-6 md:border-l md:border-ink/20">
+          <svg viewBox="0 0 200 120" class="w-full max-w-[200px] mb-3" xmlns="http://www.w3.org/2000/svg">
+            <rect x="60" y="20" width="80" height="80" rx="8" fill="#F0EBDC" stroke="#1A1F2C" stroke-width="1.4" filter="url(#roughen-light)"/>
+            <line x1="60" y1="20" x2="140" y2="100" stroke="#C8442C" stroke-width="2" filter="url(#roughen-light)"/>
+            <line x1="140" y1="20" x2="60" y2="100" stroke="#C8442C" stroke-width="2" filter="url(#roughen-light)"/>
+            <text x="100" y="115" text-anchor="middle" font-family="Caveat" font-size="18" fill="#1A1F2C">app blocked</text>
+          </svg>
+          <div class="font-mono text-[10px] uppercase tracking-[0.15em] text-graphite-soft">Fig. 02a</div>
+        </div>
+      </div>
+
+      <!-- ENTRY 3 -->
+      <div class="grid md:grid-cols-12 gap-6 md:gap-10 items-start reveal d2">
+        <div class="md:col-span-1 font-mono text-[11px] uppercase tracking-[0.18em] text-rust pt-2">03</div>
+        <div class="md:col-span-7">
+          <h3 class="font-mono text-2xl md:text-3xl text-ink mb-4 tracking-tight">The system has to outlast your weakest moment.</h3>
+          <p class="text-lg text-ink-2 leading-relaxed">
+            Built on Apple's Screen Time framework with locked settings. Your present self set the rules. Your <span class="struck">future self</span> <span class="hand text-rust text-2xl">3 a.m. self</span> can't undo them.
+          </p>
+        </div>
+        <div class="md:col-span-4 md:pl-6 md:border-l md:border-ink/20">
+          <svg viewBox="0 0 200 120" class="w-full max-w-[200px] mb-3" xmlns="http://www.w3.org/2000/svg">
+            <rect x="50" y="40" width="100" height="65" rx="8" fill="#DDD6BF" stroke="#1A1F2C" stroke-width="1.4" filter="url(#roughen-light)"/>
+            <path d="M 75 40 V 25 a 25 25 0 0 1 50 0 V 40" fill="none" stroke="#1A1F2C" stroke-width="1.4" filter="url(#roughen-light)"/>
+            <circle cx="100" cy="72" r="6" fill="#1A1F2C"/>
+            <line x1="100" y1="78" x2="100" y2="90" stroke="#1A1F2C" stroke-width="2"/>
+          </svg>
+          <div class="font-mono text-[10px] uppercase tracking-[0.15em] text-graphite-soft">Fig. 03a</div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- =========================================================
+     §02 — JOURNAL ENTRY / PULL QUOTE
+     ========================================================= -->
+<section class="grid-paper relative">
+  <div class="max-w-[1100px] mx-auto px-6 md:px-10 lg:px-14 py-24 md:py-36">
+
+    <div class="flex items-baseline gap-6 mb-12 reveal">
+      <div class="font-mono text-[11px] uppercase tracking-[0.2em] text-graphite">A note before continuing</div>
+      <span class="flex-1 h-px bg-ink/20"></span>
+    </div>
+
+    <!-- the quote, set in HAND -->
+    <div class="relative reveal d1">
+      <p class="hand text-4xl md:text-6xl lg:text-[4.5rem] text-ink leading-[1.1]" style="font-weight: 400;">
+        You don't have a willpower problem.<br>
+        <span class="text-rust">You have a phone that's been engineered to win.</span>
+      </p>
+
+      <!-- a hand-drawn underline beneath the punchline -->
+      <svg class="mt-2 max-w-md" viewBox="0 0 400 12" xmlns="http://www.w3.org/2000/svg">
+        <path d="M 5 7 Q 100 2 200 6 T 395 7" fill="none" stroke="#C8442C" stroke-width="2" stroke-linecap="round" filter="url(#roughen-light)"/>
+      </svg>
+    </div>
+
+    <!-- two columns of body, like a magazine spread -->
+    <div class="grid md:grid-cols-2 gap-12 md:gap-20 mt-16">
+      <p class="text-lg text-ink-2 leading-relaxed reveal d2">
+        Every other focus app asks you to be the bouncer at your own door. To resist a screen designed by thousands of engineers to be irresistible. That's a fight you'll lose, and lose, and lose.
+      </p>
+      <p class="text-lg text-ink-2 leading-relaxed reveal d3">
+        FocusPad puts something physical between you and your apps. The choice you already made — to focus — is the choice that holds. The pad keeps it that way until time is up.
+      </p>
+    </div>
+
+    <!-- signature element -->
+    <div class="mt-16 flex items-center gap-3 reveal d3">
+      <span class="hand text-3xl text-graphite">— the team</span>
+      <span class="font-mono text-[10px] uppercase tracking-[0.15em] text-graphite-soft">/ FOCUSPAD</span>
+    </div>
+
+  </div>
+
+  <div class="border-b-2 border-ink"></div>
+</section>
+
+<!-- =========================================================
+     §02 — PRIVACY MANIFEST
+     ========================================================= -->
+<section id="privacy" class="bg-ink text-paper relative overflow-hidden">
+
+  <!-- subtle dot grid in the dark -->
+  <div class="absolute inset-0 pointer-events-none"
+       style="background-image: radial-gradient(circle at 1px 1px, rgba(240,235,220,0.08) 1px, transparent 0); background-size: 24px 24px;"></div>
+
+  <div class="relative max-w-[1400px] mx-auto px-6 md:px-10 lg:px-14 py-20 md:py-32">
+
+    <!-- header with stamp -->
+    <div class="flex flex-wrap items-baseline gap-6 mb-12 reveal">
+      <div class="font-mono text-[11px] uppercase tracking-[0.2em] text-paper-3">§02 · Privacy Manifest</div>
+      <span class="flex-1 h-px bg-paper/30"></span>
+      <span class="font-mono text-[11px] uppercase tracking-[0.18em] text-mint">Verified by architecture</span>
+    </div>
+
+    <h2 class="display-mono-light text-4xl md:text-6xl lg:text-7xl text-paper mb-8 max-w-4xl reveal d1">
+      What FocusPad <br><span class="text-rust">does not collect.</span>
+    </h2>
+
+    <p class="text-lg md:text-xl text-paper-3 leading-relaxed max-w-2xl mb-16 reveal d2">
+      Privacy isn't a feature we tacked on. It's the architecture. Sessions live on your phone. None of it touches our servers. None of it ever will. Below: the manifest of what is <em class="text-paper">not in the box.</em>
+    </p>
+
+    <!-- manifest table -->
+    <div class="border-t border-paper/30 max-w-4xl reveal d2">
+
+      <div class="grid grid-cols-[auto,1fr,auto] gap-x-6 md:gap-x-12 items-center py-5 border-b border-paper/15 group">
+        <span class="font-mono text-paper-3 text-sm w-10">001</span>
+        <span class="font-sans text-lg md:text-xl text-paper struck">Your location</span>
+        <span class="font-mono text-[11px] uppercase tracking-[0.15em] text-rust">Not collected</span>
+      </div>
+      <div class="grid grid-cols-[auto,1fr,auto] gap-x-6 md:gap-x-12 items-center py-5 border-b border-paper/15">
+        <span class="font-mono text-paper-3 text-sm w-10">002</span>
+        <span class="font-sans text-lg md:text-xl text-paper struck">Your contacts</span>
+        <span class="font-mono text-[11px] uppercase tracking-[0.15em] text-rust">Not collected</span>
+      </div>
+      <div class="grid grid-cols-[auto,1fr,auto] gap-x-6 md:gap-x-12 items-center py-5 border-b border-paper/15">
+        <span class="font-mono text-paper-3 text-sm w-10">003</span>
+        <span class="font-sans text-lg md:text-xl text-paper struck">Your browsing history</span>
+        <span class="font-mono text-[11px] uppercase tracking-[0.15em] text-rust">Not collected</span>
+      </div>
+      <div class="grid grid-cols-[auto,1fr,auto] gap-x-6 md:gap-x-12 items-center py-5 border-b border-paper/15">
+        <span class="font-mono text-paper-3 text-sm w-10">004</span>
+        <span class="font-sans text-lg md:text-xl text-paper struck">Your messages</span>
+        <span class="font-mono text-[11px] uppercase tracking-[0.15em] text-rust">Not collected</span>
+      </div>
+      <div class="grid grid-cols-[auto,1fr,auto] gap-x-6 md:gap-x-12 items-center py-5 border-b border-paper/15">
+        <span class="font-mono text-paper-3 text-sm w-10">005</span>
+        <span class="font-sans text-lg md:text-xl text-paper struck">Anything you do outside the app</span>
+        <span class="font-mono text-[11px] uppercase tracking-[0.15em] text-rust">Not collected</span>
+      </div>
+      <div class="grid grid-cols-[auto,1fr,auto] gap-x-6 md:gap-x-12 items-center py-5 border-b border-paper/15">
+        <span class="font-mono text-paper-3 text-sm w-10">006</span>
+        <span class="font-sans text-lg md:text-xl text-paper struck">Anything we'd ever sell</span>
+        <span class="font-mono text-[11px] uppercase tracking-[0.15em] text-rust">Not collected</span>
+      </div>
+
+      <!-- contrast row: what we DO keep -->
+      <div class="grid grid-cols-[auto,1fr,auto] gap-x-6 md:gap-x-12 items-center py-5">
+        <span class="font-mono text-paper-3 text-sm w-10">007</span>
+        <span class="font-sans text-lg md:text-xl text-paper">Session length, on your device only</span>
+        <span class="font-mono text-[11px] uppercase tracking-[0.15em] text-mint">Local only</span>
+      </div>
+
+    </div>
+
+    <!-- pull-out quote at bottom -->
+    <div class="mt-16 max-w-3xl reveal d2">
+      <div class="hand text-3xl md:text-4xl text-paper" style="font-weight: 400;">
+        "Sessions stay on your device. That's it."
+      </div>
+      <a href="#" class="inline-flex items-center gap-2 mt-6 font-mono text-[12px] uppercase tracking-[0.12em] text-paper-3 hover:text-paper transition border-b border-paper-3/40 hover:border-paper pb-1">
+        Read the full privacy policy
+        <span>→</span>
       </a>
     </div>
-  </section>
-</div>
+
+  </div>
+</section>
+
+<!-- =========================================================
+     §03 — DELIVERY NOTIFICATION (CTA)
+     ========================================================= -->
+<section id="contact" class="grid-paper relative overflow-hidden">
+  <div class="grain absolute inset-0 pointer-events-none"></div>
+
+  <div class="relative max-w-[1100px] mx-auto px-6 md:px-10 lg:px-14 py-24 md:py-36">
+
+    <div class="grid md:grid-cols-12 gap-10 md:gap-16 items-end">
+
+      <div class="md:col-span-7 reveal">
+        <div class="font-mono text-[11px] uppercase tracking-[0.2em] text-graphite mb-6">§03 · Notification of delivery</div>
+        <h2 class="display-mono text-4xl md:text-6xl lg:text-[5rem] text-ink leading-[0.96] mb-8" style="font-weight: 400;">
+          Phones off.<br>
+          <span class="text-rust">Minds on.</span>
+        </h2>
+        <p class="text-lg text-ink-2 leading-relaxed max-w-md">
+          The pad ships <span class="hand-under-ink">Q3 2026</span>. The app ships with it. Drop your email and we'll let you know the day the App Store goes live. Early-access pricing on the pad if you're on the list.
+        </p>
+      </div>
+
+      <div class="md:col-span-5 reveal d1">
+        <!-- form styled like an order slip -->
+        <form onsubmit="event.preventDefault(); this.querySelector('button').textContent='Logged ✓';" class="border-2 border-ink p-6 md:p-8 bg-paper-2/40 relative">
+
+          <!-- top tape -->
+          <div class="absolute -top-3 left-6 right-6 h-6 bg-mustard/40 -rotate-1 pointer-events-none"></div>
+
+          <div class="font-mono text-[10px] uppercase tracking-[0.18em] text-graphite mb-1">Form 03 / Notify</div>
+          <div class="font-mono text-sm text-ink mb-5">— Receiving party —</div>
+
+          <label class="block mb-5">
+            <span class="font-mono text-[11px] uppercase tracking-[0.15em] text-graphite mb-2 block">Email address</span>
+            <input type="email" required placeholder="you@example.com"
+                   class="w-full bg-transparent border-b-2 border-ink/60 px-1 py-2 font-mono text-base text-ink placeholder-graphite-soft focus:outline-none focus:border-rust transition">
+          </label>
+
+          <button class="ink-btn w-full justify-center mt-4">
+            Notify me at launch
+          </button>
+
+          <div class="font-mono text-[10px] uppercase tracking-[0.15em] text-graphite-soft mt-5 flex items-center justify-between">
+            <span>No spam · One email at launch</span>
+            <span>///</span>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+  <div class="border-b-2 border-ink"></div>
+</section>
+
+<!-- =========================================================
+     COLOPHON / FOOTER
+     ========================================================= -->
+<footer class="grid-paper relative">
+  <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-14 py-16">
+
+    <div class="grid md:grid-cols-12 gap-10 mb-12">
+
+      <div class="md:col-span-5">
+        <div class="flex items-end gap-3 mb-4">
+          <svg width="32" height="32" viewBox="0 0 44 44" class="roughen">
+            <rect x="4" y="4" width="36" height="36" fill="none" stroke="#1A1F2C" stroke-width="2"/>
+            <rect x="11" y="11" width="22" height="22" fill="#1A1F2C"/>
+          </svg>
+          <span class="font-mono text-xl font-medium text-ink">FocusPad<span class="text-rust">.</span></span>
+        </div>
+        <p class="hand text-3xl md:text-4xl text-ink leading-tight max-w-sm" style="font-weight: 400;">
+          Phones off.<br>
+          <span class="text-rust">Minds on.</span>
+        </p>
+      </div>
+
+      <div class="md:col-span-2">
+        <div class="font-mono text-[10px] uppercase tracking-[0.18em] text-graphite-soft mb-4">Sections</div>
+        <ul class="space-y-2 font-mono text-sm">
+          <li><a href="#how" class="ink-link">§01&nbsp;How it works</a></li>
+          <li><a href="#privacy" class="ink-link">§02&nbsp;Privacy</a></li>
+          <li><a href="#contact" class="ink-link">§03&nbsp;Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="md:col-span-2">
+        <div class="font-mono text-[10px] uppercase tracking-[0.18em] text-graphite-soft mb-4">Get it</div>
+        <ul class="space-y-2 font-mono text-sm">
+          <li><a href="#contact" class="ink-link">Notify me</a></li>
+          <li><a href="#" class="ink-link">App Store (soon)</a></li>
+        </ul>
+      </div>
+
+      <div class="md:col-span-3">
+        <div class="font-mono text-[10px] uppercase tracking-[0.18em] text-graphite-soft mb-4">Contact</div>
+        <ul class="space-y-2 font-mono text-sm">
+          <li><a href="mailto:hello@focuspad.app" class="ink-link">hello@focuspad.app</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- colophon -->
+    <div class="border-t border-ink/30 pt-6 flex flex-col md:flex-row justify-between gap-4 font-mono text-[10px] uppercase tracking-[0.15em] text-graphite">
+      <div>© 2026 FocusPad · Set in IBM Plex Mono &amp; Sans · Drawings by hand</div>
+      <div class="flex items-center gap-3">
+        <span>Rev. 04 — 2026</span>
+        <span>·</span>
+        <span>p. 04 / 04</span>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(el => io.observe(el));
+  } else {
+    reveals.forEach(el => el.classList.add('in'));
+  }
+</script>
+
 </body>
 </html>

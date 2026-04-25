@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Privacy Policy — FocusPad</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          paper:     '#F0EBDC',
+          'paper-2': '#E8E2D0',
+          'paper-3': '#DDD6BF',
+          ink:       '#1A1F2C',
+          'ink-2':   '#2B3142',
+          graphite:  '#4A4D52',
+          'graphite-soft':'#7C7E80',
+          rust:      '#C8442C',
+          'rust-2':  '#A8341E',
+          mustard:   '#D4A437',
+          mint:      '#A8B89B',
+          gridline:  '#B8A98A',
+        },
+        fontFamily: {
+          mono: ['"IBM Plex Mono"', 'ui-monospace', 'monospace'],
+          sans: ['"IBM Plex Sans"', 'system-ui', 'sans-serif'],
+          hand: ['"Caveat"', 'cursive'],
+        },
+      }
+    }
+  }
+</script>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body {
+    background: #F0EBDC;
+    color: #1A1F2C;
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .grid-paper {
+    background-color: #F0EBDC;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(184,169,138,0.45) 1px, transparent 0);
+    background-size: 24px 24px;
+    background-position: 0 0;
+  }
+
+  .grain::after {
+    content: '';
+    position: absolute; inset: 0;
+    pointer-events: none;
+    opacity: 0.05;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    z-index: 1;
+  }
+
+  .display-mono {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 0.94;
+  }
+  .display-mono-light {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 300;
+    letter-spacing: -0.045em;
+    line-height: 0.96;
+  }
+  .label-mono {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .hand {
+    font-family: 'Caveat', cursive;
+    font-weight: 400;
+  }
+
+  .struck { text-decoration: line-through; text-decoration-color: #C8442C; text-decoration-thickness: 2px; opacity: 0.6; }
+
+  /* readable prose styles */
+  .prose-body { font-family: 'IBM Plex Sans', sans-serif; font-size: 17px; line-height: 1.75; color: #1A1F2C; max-width: 68ch; }
+  .prose-body p { margin: 0 0 1.1em 0; }
+  .prose-body strong { font-weight: 600; color: #1A1F2C; }
+  .prose-body em { font-style: italic; }
+  .prose-body ul { margin: 0 0 1.4em 0; padding: 0; list-style: none; }
+  .prose-body ul li { padding-left: 1.6em; position: relative; margin-bottom: 0.5em; }
+  .prose-body ul li::before { content: '—'; position: absolute; left: 0; color: #7C7E80; font-family: 'IBM Plex Mono', monospace; }
+  .prose-body a { color: #C8442C; border-bottom: 1px solid currentColor; padding-bottom: 1px; }
+  .prose-body a:hover { color: #A8341E; }
+
+  .section-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #C8442C;
+    margin-bottom: 0.4em;
+    display: block;
+  }
+  .section-h {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500;
+    font-size: 28px;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: #1A1F2C;
+    margin: 0 0 0.9em 0;
+  }
+  .sub-h {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: 0;
+    color: #1A1F2C;
+    margin: 1.6em 0 0.6em 0;
+  }
+
+  /* link styles */
+  .nav-link {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: #1A1F2C;
+    text-decoration: none;
+    position: relative;
+    padding-bottom: 2px;
+  }
+  .nav-link:hover { color: #C8442C; }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -2px;
+    width: 100%; height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform .35s cubic-bezier(.22,1,.36,1);
+  }
+  .nav-link:hover::after { transform: scaleX(1); transform-origin: left; }
+
+  /* draft banner */
+  .draft-banner {
+    background: #FFF1EB;
+    border-bottom: 2px solid #C8442C;
+    color: #A8341E;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .draft-banner ol { padding-left: 1.4em; margin: 0.4em 0 0 0; }
+  .draft-banner ol li { margin-bottom: 0.25em; }
+  .draft-banner code { background: rgba(168,52,30,0.12); padding: 1px 5px; border-radius: 2px; font-size: 12px; }
+</style>
+</head>
+
+<body>
+
+<!-- ===== TITLE BLOCK / NAV — same as home page ===== -->
+<header class="grid-paper relative">
+  <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-14 pt-7 md:pt-9 pb-6">
+
+    <div class="flex items-baseline justify-between font-mono text-[11px] tracking-[0.18em] uppercase text-graphite mb-6">
+      <span>FocusPad / Product Dossier</span>
+      <span class="hidden sm:inline">Rev. 04 — 2026</span>
+      <span>p. 02 / 04</span>
+    </div>
+
+    <div class="border-t border-ink/30"></div>
+
+    <div class="flex items-end justify-between gap-6 pt-5">
+      <a href="/" class="flex items-end gap-4 group">
+        <div class="hidden sm:block">
+          <svg width="44" height="44" viewBox="0 0 44 44">
+            <rect x="4" y="4" width="36" height="36" fill="none" stroke="#1A1F2C" stroke-width="2"/>
+            <rect x="11" y="11" width="22" height="22" fill="#1A1F2C"/>
+            <circle cx="22" cy="22" r="3" fill="#F0EBDC"/>
+          </svg>
+        </div>
+        <div>
+          <div class="font-mono text-[10px] tracking-[0.2em] uppercase text-graphite mb-1">— A focus tool —</div>
+          <div class="font-mono text-2xl md:text-3xl font-medium text-ink tracking-tight">FocusPad<span class="text-rust">.</span></div>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-7">
+        <a href="/#how" class="nav-link">§01&nbsp;&nbsp;How&nbsp;it&nbsp;works</a>
+        <a href="/privacy" class="nav-link" style="color:#C8442C;">§02&nbsp;&nbsp;Privacy</a>
+        <a href="/#contact" class="nav-link">§03&nbsp;&nbsp;Contact</a>
+      </nav>
+    </div>
+
+    <div class="border-b border-ink/30 mt-5"></div>
+  </div>
+</header>
+
+<!-- ===== DOCUMENT TITLE ===== -->
+<section class="grid-paper grain relative">
+  <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-14 pt-12 md:pt-20 pb-12 relative">
+
+    <div class="flex items-center gap-4 mb-7">
+      <span class="label-mono text-rust">§02 · Privacy Manifest</span>
+      <span class="flex-1 h-px bg-ink/15"></span>
+      <span class="label-mono text-graphite">Document type: Legal</span>
+    </div>
+
+    <h1 class="display-mono text-[3rem] sm:text-6xl lg:text-[5.5rem] text-ink mb-8">
+      Privacy<br>
+      Policy<span class="text-rust">.</span>
+    </h1>
+
+    <div class="grid sm:grid-cols-3 gap-4 max-w-2xl font-mono text-[11px] uppercase tracking-[0.1em] text-graphite border-t border-ink/15 pt-5">
+      <div>
+        <div class="text-graphite-soft mb-1">Effective</div>
+        <div class="text-ink">April 24, 2026</div>
+      </div>
+      <div>
+        <div class="text-graphite-soft mb-1">Last updated</div>
+        <div class="text-ink">April 24, 2026</div>
+      </div>
+      <div>
+        <div class="text-graphite-soft mb-1">Jurisdiction</div>
+        <div class="text-ink">US · EU · UK · CA</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== AT A GLANCE — featured callout ===== -->
+<section class="grid-paper relative">
+  <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-14 pb-12 relative">
+
+    <div class="border-2 border-ink p-6 md:p-10 max-w-4xl bg-paper-2/40 relative">
+
+      <div class="absolute -top-3 left-6 right-6 h-6 bg-mustard/40 -rotate-1 pointer-events-none"></div>
+
+      <div class="font-mono text-[10px] uppercase tracking-[0.18em] text-graphite mb-1">— Summary —</div>
+      <h2 class="display-mono-light text-2xl md:text-3xl text-ink mb-6">At a glance.</h2>
+
+      <p class="prose-body !max-w-none text-ink-2 mb-6 italic">If you remember nothing else from this policy, remember this:</p>
+
+      <ul class="space-y-4 mb-2">
+        <li class="flex gap-4">
+          <span class="font-mono text-rust text-sm tracking-[0.1em] flex-shrink-0 mt-1">01</span>
+          <span class="prose-body !max-w-none">
+            <strong>FocusPad does not collect, transmit, or store any Screen Time data, blocked app lists, or session details on any server.</strong> All session data is stored locally on your device.
+          </span>
+        </li>
+        <li class="flex gap-4">
+          <span class="font-mono text-rust text-sm tracking-[0.1em] flex-shrink-0 mt-1">02</span>
+          <span class="prose-body !max-w-none">We do not sell your data. We do not share it with advertisers. We do not use third-party analytics inside the app.</span>
+        </li>
+        <li class="flex gap-4">
+          <span class="font-mono text-rust text-sm tracking-[0.1em] flex-shrink-0 mt-1">03</span>
+          <span class="prose-body !max-w-none">The only personal information we hold on our servers is your email address — and only if you've chosen to give it to us, to join our launch list or contact support.</span>
+        </li>
+      </ul>
+
+      <p class="prose-body !max-w-none text-graphite text-[14px] mt-6 pt-5 border-t border-ink/15">The rest of this document explains the above in more detail and covers your rights under GDPR, CCPA, and other privacy laws.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MAIN CONTENT ===== -->
+<article class="grid-paper relative">
+  <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-14 py-12 md:py-20">
+
+    <!-- Two column layout: left is sticky toc, right is content. On mobile: stack -->
+    <div class="grid lg:grid-cols-12 gap-12">
+
+      <!-- TOC sidebar -->
+      <aside class="lg:col-span-3">
+        <div class="lg:sticky lg:top-8">
+          <div class="label-mono text-graphite mb-4">Contents</div>
+          <ol class="space-y-2 font-mono text-[12px] text-ink">
+            <li><a href="#s01" class="hover:text-rust transition">01 · Who we are</a></li>
+            <li><a href="#s02" class="hover:text-rust transition">02 · Product &amp; data</a></li>
+            <li><a href="#s03" class="hover:text-rust transition">03 · What we collect</a></li>
+            <li><a href="#s04" class="hover:text-rust transition">04 · What we don't</a></li>
+            <li><a href="#s05" class="hover:text-rust transition">05 · How we use it</a></li>
+            <li><a href="#s06" class="hover:text-rust transition">06 · How we share</a></li>
+            <li><a href="#s07" class="hover:text-rust transition">07 · Retention</a></li>
+            <li><a href="#s08" class="hover:text-rust transition">08 · Your rights</a></li>
+            <li><a href="#s09" class="hover:text-rust transition">09 · Int'l transfers</a></li>
+            <li><a href="#s10" class="hover:text-rust transition">10 · Children</a></li>
+            <li><a href="#s11" class="hover:text-rust transition">11 · Security</a></li>
+            <li><a href="#s12" class="hover:text-rust transition">12 · Changes</a></li>
+            <li><a href="#s13" class="hover:text-rust transition">13 · Contact</a></li>
+          </ol>
+        </div>
+      </aside>
+
+      <!-- Main content -->
+      <div class="lg:col-span-9 space-y-14">
+
+        <!-- 01 -->
+        <section id="s01">
+          <span class="section-num">§02.01</span>
+          <h2 class="section-h">Who we are.</h2>
+          <div class="prose-body">
+            <p>FocusPad is operated by <strong>[LEGAL ENTITY NAME]</strong>, a [STATE OF INCORPORATION] [ENTITY TYPE], with a registered address at [BUSINESS ADDRESS] ("FocusPad," "we," "us," "our").</p>
+            <p>For privacy questions, or to exercise any of the rights described in this policy:</p>
+            <ul>
+              <li><strong>Email:</strong> <a href="mailto:privacy@focuspad.co">privacy@focuspad.co</a></li>
+              <li><strong>Mail:</strong> [BUSINESS ADDRESS]</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- 02 -->
+        <section id="s02" class="relative">
+          <span class="section-num">§02.02</span>
+          <h2 class="section-h">The product, and how it handles data.</h2>
+          <div class="prose-body">
+            <p>FocusPad is an iPhone app paired with a passive NFC desk pad. When you place your iPhone on the pad, the app starts a focus session and blocks the apps you've chosen to block until the session ends.</p>
+            <p>To do this, FocusPad uses Apple's <strong>Screen Time framework</strong> — specifically the FamilyControls, DeviceActivity, and ManagedSettings APIs. This framework runs entirely on your device. We — FocusPad's servers, our employees, and our service providers — never see, receive, or transmit any data about which apps you've blocked, how long your sessions last, or what you do on your phone.</p>
+            <p><strong>We architected the product this way deliberately.</strong> Sessions live on your device. They never touch our servers. They never will.</p>
+          </div>
+
+          <!-- handwritten margin note for emphasis -->
+          <div class="hidden xl:block absolute -right-32 top-32 max-w-[12rem]">
+            <div class="hand text-2xl text-rust" style="transform: rotate(-3deg); line-height: 1.15;">
+              ← this is the<br>most important<br>sentence in<br>the policy
+            </div>
+          </div>
+        </section>
+
+        <!-- 03 -->
+        <section id="s03">
+          <span class="section-num">§02.03</span>
+          <h2 class="section-h">Information we collect.</h2>
+
+          <h3 class="sub-h">3.1 — On your device (we never see this)</h3>
+          <div class="prose-body">
+            <p>The FocusPad app stores the following information <strong>locally on your iPhone</strong>, where it remains under your control:</p>
+            <ul>
+              <li>The list of apps and websites you've chosen to block</li>
+              <li>Your session settings (length, schedule, restrictions)</li>
+              <li>Your session history (when sessions started and ended)</li>
+              <li>The Screen Time framework data required for the FamilyControls APIs to function</li>
+            </ul>
+            <p>This data does not leave your device. We have no way to access it. Deleting the app removes it.</p>
+          </div>
+
+          <h3 class="sub-h">3.2 — On our servers</h3>
+          <div class="prose-body">
+            <p>We only collect information that you actively provide:</p>
+            <ul>
+              <li><strong>Email address.</strong> If you sign up for our launch list or contact us for support, we store your email so we can reply to you or notify you when the app ships.</li>
+              <li><strong>Support correspondence.</strong> Any messages you send us, including their content and any attachments, so we can help you.</li>
+              <li><strong>Account information (post-launch, if applicable).</strong> If FocusPad later adds optional features that require an account, we will store the minimum necessary — email and an authentication token. We will update this policy before launching any such feature.</li>
+            </ul>
+          </div>
+
+          <h3 class="sub-h">3.3 — Information collected automatically</h3>
+          <div class="prose-body">
+            <ul>
+              <li><strong>App Store analytics.</strong> Apple may share aggregated, privacy-preserving statistics about app installs and crashes via App Analytics, if you have not opted out in your iOS Settings. This data is anonymized by Apple before we see it. We do not use any third-party analytics SDKs (such as Google Analytics, Firebase Analytics, Mixpanel, Amplitude, or similar) inside the app.</li>
+              <li><strong>Website analytics.</strong> focuspad.co may use a privacy-preserving analytics service to count page views in aggregate. This service does not use cookies or collect personal information. If we ever change this, we will update this policy first.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- 04 — STYLED LIKE HOME PAGE PRIVACY MANIFEST -->
+        <section id="s04">
+          <span class="section-num">§02.04</span>
+          <h2 class="section-h">What we do not collect.</h2>
+          <div class="prose-body mb-6">
+            <p>For the avoidance of doubt — and to make the architecture unmistakable — FocusPad does <strong>not</strong> collect, store, or transmit any of the following:</p>
+          </div>
+
+          <!-- dark manifest block, mirrors home page treatment -->
+          <div class="bg-ink text-paper p-6 md:p-10 -mx-2 md:mx-0">
+            <div class="grid grid-cols-[auto,1fr,auto] gap-x-6 md:gap-x-12 items-center py-4 border-b border-paper/15">
+              <span class="font-mono text-paper-3 text-sm w-10">001</span>
+              <span class="font-sans text-base md:text-lg text-paper struck">Your location</span>
+              <span class="font-mono text-[10px] uppercase tracking-[0.15em] text-rust">Not collected</span>
+            </div>
+            <div class="grid grid-cols-[auto,1fr,auto] gap-x-6 md:gap-x-12 items-center py-4 border-b border-paper/15">
+              <span class="font-mono text-paper-3 text-sm w-10">002</span>
+              <span class="font-sans text-base md:text-lg text-paper struck">Your contacts</span>
+              <span class="font-mono text-[10px] uppercase tracking-[0.15em] text-rust">Not collected</span>
+            </div>
+            <div class="grid grid-cols-[auto,1fr,auto] gap-x-6 md:gap-x-12 items-center py-4 border-b border-paper/15">
+              <span class="font-mono text-paper-3 text-sm w-10">003</span>
+              <span class="font-sans text-base md:text-lg text-paper struck">Your browsing history</span>
+              <span class="font-mono text-[10px] uppercase tracking-[0.15em] text-rust">Not collected</span>
+            </div>
+            <div class="grid grid-cols-[auto,1fr,auto] gap-x-6 md:gap-x-12 items-center py-4 border-b border-paper/15">
+              <span class="font-mono text-paper-3 text-sm w-10">004</span>
+              <span class="font-sans text-base md:text-lg text-paper struck">Your messages, photos, calendar, or other personal content</span>
+              <span class="font-mono text-[10px] uppercase tracking-[0.15em] text-rust">Not collected</span>
+            </div>
+            <div class="grid grid-cols-[auto,1fr,auto] gap-x-6 md:gap-x-12 items-center py-4 border-b border-paper/15">
+              <span class="font-mono text-paper-3 text-sm w-10">005</span>
+              <span class="font-sans text-base md:text-lg text-paper struck">The list of apps you have blocked or unblocked</span>
+              <span class="font-mono text-[10px] uppercase tracking-[0.15em] text-rust">Not collected</span>
+            </div>
+            <div class="grid grid-cols-[auto,1fr,auto] gap-x-6 md:gap-x-12 items-center py-4 border-b border-paper/15">
+              <span class="font-mono text-paper-3 text-sm w-10">006</span>
+              <span class="font-sans text-base md:text-lg text-paper struck">Your session start times, end times, or duration</span>
+              <span class="font-mono text-[10px] uppercase tracking-[0.15em] text-rust">Not collected</span>
+            </div>
+            <div class="grid grid-cols-[auto,1fr,auto] gap-x-6 md:gap-x-12 items-center py-4 border-b border-paper/15">
+              <span class="font-mono text-paper-3 text-sm w-10">007</span>
+              <span class="font-sans text-base md:text-lg text-paper struck">Any data about what you do outside the FocusPad app</span>
+              <span class="font-mono text-[10px] uppercase tracking-[0.15em] text-rust">Not collected</span>
+            </div>
+            <div class="grid grid-cols-[auto,1fr,auto] gap-x-6 md:gap-x-12 items-center py-4">
+              <span class="font-mono text-paper-3 text-sm w-10">008</span>
+              <span class="font-sans text-base md:text-lg text-paper struck">Any data we would ever sell, license, or share with advertisers</span>
+              <span class="font-mono text-[10px] uppercase tracking-[0.15em] text-rust">Not collected</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 05 -->
+        <section id="s05">
+          <span class="section-num">§02.05</span>
+          <h2 class="section-h">How we use the information we do collect.</h2>
+          <div class="prose-body">
+            <p>We use your email address and any support correspondence only to:</p>
+            <ul>
+              <li>Send you launch-related emails, if you've joined our launch list (you can unsubscribe at any time using the link at the bottom of any email)</li>
+              <li>Reply to your support questions</li>
+              <li>Send important service notices (security issues, material changes to this policy)</li>
+            </ul>
+            <p>We do not use your information for advertising, profiling, automated decision-making, or any purpose unrelated to the ones above.</p>
+            <p><strong>Legal bases for processing (EU/UK GDPR):</strong> We rely on (a) <strong>legitimate interest</strong> to operate and secure the service and respond to support inquiries, and (b) your <strong>consent</strong> for marketing communications such as our launch list. You may withdraw consent at any time.</p>
+          </div>
+        </section>
+
+        <!-- 06 -->
+        <section id="s06">
+          <span class="section-num">§02.06</span>
+          <h2 class="section-h">How we share information.</h2>
+          <div class="prose-body">
+            <p><strong>We do not sell your personal information.</strong></p>
+            <p>We share the limited information we hold (essentially: your email address, when you've given it to us) only with service providers who help us operate. We require these providers to handle your data only on our instructions and to maintain appropriate security. As of the effective date of this policy, our service providers include:</p>
+            <ul>
+              <li><strong>[EMAIL SERVICE PROVIDER]</strong> — sends transactional and launch emails on our behalf</li>
+              <li><strong>Vercel Inc.</strong> — hosts the focuspad.co website</li>
+              <li><strong>Apple Inc.</strong> — distributes the FocusPad app via the App Store, and provides aggregated App Analytics</li>
+            </ul>
+            <p>We will update this list if it changes.</p>
+            <p>We may also disclose information if required by law (for example, in response to a valid subpoena), or where necessary to protect our rights or the safety of others.</p>
+          </div>
+        </section>
+
+        <!-- 07 -->
+        <section id="s07">
+          <span class="section-num">§02.07</span>
+          <h2 class="section-h">Data retention.</h2>
+          <div class="prose-body">
+            <ul>
+              <li><strong>Email addresses on our launch list:</strong> retained until you unsubscribe, or until the launch list is no longer in use, whichever is sooner. You can request deletion at any time.</li>
+              <li><strong>Support correspondence:</strong> retained for up to 24 months after our last interaction with you, then deleted.</li>
+              <li><strong>On-device app data:</strong> retained on your device until you delete it. Uninstalling the FocusPad app removes all of it.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- 08 -->
+        <section id="s08">
+          <span class="section-num">§02.08</span>
+          <h2 class="section-h">Your rights.</h2>
+          <div class="prose-body">
+            <p>Depending on where you live, you have rights over the personal information we hold about you. Because we hold so little, exercising these rights is usually straightforward.</p>
+          </div>
+
+          <h3 class="sub-h">Under the EU/UK GDPR, you have the right to:</h3>
+          <div class="prose-body">
+            <ul>
+              <li><strong>Access</strong> the personal information we hold about you (almost always: just your email address)</li>
+              <li><strong>Rectify</strong> inaccurate personal information</li>
+              <li><strong>Erase</strong> your personal information ("right to be forgotten")</li>
+              <li><strong>Restrict</strong> or <strong>object</strong> to our processing</li>
+              <li><strong>Port</strong> your data to another service in a machine-readable format</li>
+              <li><strong>Withdraw consent</strong> at any time, where processing is based on consent</li>
+              <li><strong>Lodge a complaint</strong> with your local data protection authority</li>
+            </ul>
+          </div>
+
+          <h3 class="sub-h">Under the California Consumer Privacy Act (CCPA/CPRA), you have the right to:</h3>
+          <div class="prose-body">
+            <ul>
+              <li><strong>Know</strong> what personal information we collect about you and how it is used</li>
+              <li><strong>Delete</strong> the personal information we hold about you</li>
+              <li><strong>Correct</strong> inaccurate personal information</li>
+              <li><strong>Opt out of the sale or sharing</strong> of your personal information (we do not sell or share it)</li>
+              <li><strong>Limit the use of sensitive personal information</strong> (we do not collect any)</li>
+              <li><strong>Non-discrimination</strong> for exercising any of these rights</li>
+            </ul>
+          </div>
+
+          <h3 class="sub-h">How to exercise your rights</h3>
+          <div class="prose-body">
+            <p>Email <a href="mailto:privacy@focuspad.co">privacy@focuspad.co</a> with your request. We'll respond within 30 days (or sooner, where required by law). We may need to verify your identity before acting on a request — usually by confirming the request from the email address we have on file.</p>
+            <p>You may also designate an authorized agent to make a request on your behalf, subject to verification.</p>
+          </div>
+        </section>
+
+        <!-- 09 -->
+        <section id="s09">
+          <span class="section-num">§02.09</span>
+          <h2 class="section-h">International data transfers.</h2>
+          <div class="prose-body">
+            <p>We operate from the United States, and the limited information we hold (your email address, support correspondence) is processed there. If you are located in the European Economic Area, the United Kingdom, or Switzerland, we rely on Standard Contractual Clauses or another approved transfer mechanism when transferring personal information out of those regions.</p>
+          </div>
+        </section>
+
+        <!-- 10 -->
+        <section id="s10">
+          <span class="section-num">§02.10</span>
+          <h2 class="section-h">Children's privacy.</h2>
+          <div class="prose-body">
+            <p>FocusPad is intended for adults and is not directed at children under 16. We do not knowingly collect personal information from children under 16. If you believe a child has provided us with personal information, please contact <a href="mailto:privacy@focuspad.co">privacy@focuspad.co</a> and we will delete it promptly.</p>
+          </div>
+        </section>
+
+        <!-- 11 -->
+        <section id="s11">
+          <span class="section-num">§02.11</span>
+          <h2 class="section-h">Security.</h2>
+          <div class="prose-body">
+            <p>We use industry-standard security practices to protect the limited information we hold, including encryption in transit (HTTPS), encryption at rest, access controls, and regular review of our service providers. No system is perfectly secure, and we cannot guarantee absolute security.</p>
+            <p>The strongest security feature of FocusPad is architectural: the most sensitive information — what apps you block, how and when you use your phone — never reaches us in the first place.</p>
+          </div>
+        </section>
+
+        <!-- 12 -->
+        <section id="s12">
+          <span class="section-num">§02.12</span>
+          <h2 class="section-h">Changes to this policy.</h2>
+          <div class="prose-body">
+            <p>If we make material changes to this policy, we will update the "Last Updated" date at the top and, for significant changes, notify you by email (if we have your address) or by prominent notice on focuspad.co at least <strong>14 days</strong> before the change takes effect.</p>
+            <p>Non-material changes (such as fixing typos or clarifying language) may be made without notice.</p>
+          </div>
+        </section>
+
+        <!-- 13 -->
+        <section id="s13">
+          <span class="section-num">§02.13</span>
+          <h2 class="section-h">Contact us.</h2>
+          <div class="prose-body">
+            <p>For any privacy question, request, or concern:</p>
+            <ul>
+              <li><strong>Privacy contact:</strong> <a href="mailto:privacy@focuspad.co">privacy@focuspad.co</a></li>
+              <li><strong>General contact:</strong> <a href="mailto:hello@focuspad.co">hello@focuspad.co</a></li>
+              <li><strong>Mail:</strong> [BUSINESS ADDRESS]</li>
+            </ul>
+          </div>
+
+          <!-- final colophon -->
+          <div class="mt-12 pt-6 border-t border-ink/20 font-mono text-[11px] uppercase tracking-[0.15em] text-graphite-soft">
+            End of document · This policy is published in English. If we provide translations, the English version controls in the event of any conflict.
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <!-- bottom rule -->
+    <div class="border-b-2 border-ink mt-20"></div>
+  </div>
+</article>
+
+<!-- ===== FOOTER — same as home ===== -->
+<footer class="grid-paper relative">
+  <div class="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-14 py-16">
+
+    <div class="grid md:grid-cols-12 gap-10 mb-12">
+
+      <div class="md:col-span-5">
+        <div class="flex items-end gap-3 mb-4">
+          <svg width="32" height="32" viewBox="0 0 44 44">
+            <rect x="4" y="4" width="36" height="36" fill="none" stroke="#1A1F2C" stroke-width="2"/>
+            <rect x="11" y="11" width="22" height="22" fill="#1A1F2C"/>
+          </svg>
+          <span class="font-mono text-xl font-medium text-ink">FocusPad<span class="text-rust">.</span></span>
+        </div>
+        <p class="hand text-3xl md:text-4xl text-ink leading-tight max-w-sm">
+          Phones off.<br>
+          <span class="text-rust">Minds on.</span>
+        </p>
+      </div>
+
+      <div class="md:col-span-2">
+        <div class="font-mono text-[10px] uppercase tracking-[0.18em] text-graphite-soft mb-4">Sections</div>
+        <ul class="space-y-2 font-mono text-sm">
+          <li><a href="/#how" class="text-ink hover:text-rust transition border-b border-ink/30 pb-0.5">§01&nbsp;How it works</a></li>
+          <li><a href="/privacy" class="text-rust border-b border-rust/40 pb-0.5">§02&nbsp;Privacy</a></li>
+          <li><a href="/#contact" class="text-ink hover:text-rust transition border-b border-ink/30 pb-0.5">§03&nbsp;Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="md:col-span-2">
+        <div class="font-mono text-[10px] uppercase tracking-[0.18em] text-graphite-soft mb-4">Get it</div>
+        <ul class="space-y-2 font-mono text-sm">
+          <li><a href="/#contact" class="text-ink hover:text-rust transition border-b border-ink/30 pb-0.5">Notify me</a></li>
+          <li><a href="#" class="text-ink hover:text-rust transition border-b border-ink/30 pb-0.5">App Store (soon)</a></li>
+        </ul>
+      </div>
+
+      <div class="md:col-span-3">
+        <div class="font-mono text-[10px] uppercase tracking-[0.18em] text-graphite-soft mb-4">Contact</div>
+        <ul class="space-y-2 font-mono text-sm">
+          <li><a href="mailto:hello@focuspad.co" class="text-ink hover:text-rust transition border-b border-ink/30 pb-0.5">hello@focuspad.co</a></li>
+          <li><a href="mailto:privacy@focuspad.co" class="text-ink hover:text-rust transition border-b border-ink/30 pb-0.5">privacy@focuspad.co</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-ink/30 pt-6 flex flex-col md:flex-row justify-between gap-4 font-mono text-[10px] uppercase tracking-[0.15em] text-graphite">
+      <div>© 2026 FocusPad · Set in IBM Plex Mono &amp; Sans · Drawings by hand</div>
+      <div class="flex items-center gap-3">
+        <span>Rev. 04 — 2026</span>
+        <span>·</span>
+        <span>p. 02 / 04</span>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+</body>
+</html>

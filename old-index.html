@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FocusPad — Live Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #F5F5F5;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #2D2D2D;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+:root {
+  --sage: #8B9A7B;
+  --sage-dark: #6B7D5E;
+  --sage-deeper: #4A5C3E;
+  --sage-bg: rgba(139, 154, 123, 0.08);
+  --green: #4CAF50;
+  --green-bg: #E8F5E9;
+  --red: #E53935;
+  --red-bg: #FFEBEE;
+  --orange: #FB8C00;
+  --orange-bg: #FFF3E0;
+  --neutral: #BDBDBD;
+  --neutral-bg: #F5F5F5;
+  --text: #2D2D2D;
+  --text-muted: #888;
+  --text-light: #aaa;
+  --border: #E8E8E8;
+}
+.nav { background: #fff; border-bottom: 1px solid var(--border); padding: 12px 28px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
+.logo-mark { width: 28px; height: 28px; border-radius: 7px; background: var(--sage); display: flex; align-items: center; justify-content: center; }
+.logo-mark svg { width: 13px; height: 13px; }
+.logo-text { font-family: 'DM Sans', sans-serif; font-size: 17px; font-weight: 700; color: var(--text); }
+.logo-divider { width: 1px; height: 18px; background: #E0E0E0; margin: 0 4px; }
+.logo-page { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+.nav-right { display: flex; align-items: center; gap: 10px; }
+.live-tag { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; background: var(--green-bg); border-radius: 14px; font-size: 11px; font-weight: 600; color: var(--green); font-family: 'DM Sans', sans-serif; }
+.live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.container { max-width: 1100px; margin: 0 auto; padding: 0 28px; flex: 1; display: flex; align-items: center; }
+.hero { padding: 56px 0 40px; }
+.hero h1 { font-family: 'DM Sans', sans-serif; font-size: clamp(30px, 4vw, 42px); font-weight: 700; color: var(--text); letter-spacing: -0.025em; line-height: 1.1; margin-bottom: 14px; }
+.hero h1 .accent { color: var(--sage); }
+.hero p { font-size: 16px; line-height: 1.55; color: var(--text-muted); max-width: 640px; margin-bottom: 24px; }
+.hero-meta { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 8px; }
+.hero-chip { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; background: #fff; border: 1px solid var(--border); border-radius: 7px; font-size: 12px; font-weight: 500; color: var(--text-muted); font-family: 'DM Sans', sans-serif; }
+.hero-chip .chip-num { color: var(--text); font-weight: 700; }
+.hero-chip .chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+.demos-section { padding: 40px 0; width: 100%; }
+.demos-label { font-size: 11px; font-weight: 700; color: var(--sage-dark); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 18px; font-family: 'DM Sans', sans-serif; }
+.demos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+@media (max-width: 900px) { .demos-grid { grid-template-columns: 1fr; gap: 14px; } }
+.demo-card { background: #fff; border: 1.5px solid var(--border); border-radius: 14px; padding: 0; overflow: hidden; cursor: pointer; transition: all 0.2s ease; text-decoration: none; color: inherit; display: flex; flex-direction: column; position: relative; }
+.demo-card:hover { border-color: var(--sage); transform: translateY(-3px); box-shadow: 0 12px 30px -8px rgba(139, 154, 123, 0.25); }
+.demo-preview { aspect-ratio: 16 / 11; background: #F5F5F5; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; border-bottom: 1px solid var(--border); }
+.prev-phone-bg { width: 100%; height: 100%; background: linear-gradient(145deg, #0C0C0C 0%, #13131F 50%, #0C0C0C 100%); display: flex; align-items: center; justify-content: center; }
+.prev-phone { width: 90px; height: 180px; background: #1A1814; border-radius: 18px; padding: 4px; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4); }
+.prev-phone-screen { width: 100%; height: 100%; background: linear-gradient(160deg, #EBE8E0 0%, #D0CCB8 100%); border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; }
+.prev-phone-lock { width: 32px; height: 32px; border-radius: 50%; background: var(--sage); display: flex; align-items: center; justify-content: center; }
+.prev-phone-lock svg { width: 16px; height: 16px; }
+.prev-phone-text { font-family: 'DM Sans', sans-serif; font-size: 8px; font-weight: 700; color: #3A3A2E; }
+.prev-phone-sub { font-family: 'DM Sans', sans-serif; font-size: 6.5px; color: var(--sage-dark); }
+.prev-teacher { width: 100%; height: 100%; padding: 18px; display: flex; align-items: center; justify-content: center; }
+.prev-desk-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; width: 100%; max-width: 220px; }
+.prev-desk { aspect-ratio: 1; border-radius: 3px; border: 1px solid; }
+.prev-desk.g { background: var(--green-bg); border-color: var(--green); }
+.prev-desk.r { background: var(--red-bg); border-color: var(--red); }
+.prev-dean { width: 100%; height: 100%; padding: 16px; display: flex; align-items: center; justify-content: center; }
+.prev-rooms { display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; width: 100%; max-width: 220px; }
+.prev-room { background: #fff; border: 1px solid var(--border); border-radius: 4px; padding: 6px; display: flex; flex-direction: column; gap: 3px; }
+.prev-room.warn { border-color: var(--red); background: var(--red-bg); }
+.prev-room-top { display: flex; justify-content: space-between; align-items: center; }
+.prev-room-num { font-family: 'DM Sans', sans-serif; font-size: 8px; font-weight: 700; color: var(--text); }
+.prev-room-pct { font-family: 'DM Sans', sans-serif; font-size: 7px; font-weight: 700; }
+.prev-room.warn .prev-room-pct { color: var(--red); }
+.prev-room:not(.warn) .prev-room-pct { color: var(--green); }
+.prev-room-bar { height: 2px; background: #EEE; border-radius: 1px; overflow: hidden; }
+.prev-room-bar-fill { height: 100%; background: var(--green); }
+.prev-room.warn .prev-room-bar-fill { background: var(--red); }
+.demo-card-body { padding: 18px 20px 20px; flex: 1; display: flex; flex-direction: column; }
+.demo-card-num { font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 700; color: var(--sage); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; }
+.demo-card h3 { font-family: 'DM Sans', sans-serif; font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 6px; letter-spacing: -0.01em; }
+.demo-card p { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px; flex: 1; }
+.demo-card-cta { display: inline-flex; align-items: center; gap: 6px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 700; color: var(--sage-deeper); letter-spacing: -0.005em; }
+.demo-card-cta .arrow { transition: transform 0.2s ease; display: inline-block; }
+.demo-card:hover .demo-card-cta .arrow { transform: translateX(3px); }
+.evidence-section { padding: 32px 0 48px; border-top: 1px solid var(--border); margin-top: 20px; }
+.evidence-label { font-size: 11px; font-weight: 700; color: var(--sage-dark); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 20px; font-family: 'DM Sans', sans-serif; }
+.evidence-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+@media (max-width: 760px) { .evidence-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 440px) { .evidence-grid { grid-template-columns: 1fr; } }
+.ev-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+.ev-num { font-family: 'DM Sans', sans-serif; font-size: 24px; font-weight: 700; color: var(--text); letter-spacing: -0.02em; line-height: 1; margin-bottom: 8px; }
+.ev-num .ev-small { font-size: 14px; color: var(--sage); font-weight: 500; }
+.ev-text { font-size: 11.5px; color: var(--text-muted); line-height: 1.45; }
+.foot { padding: 28px 0 48px; border-top: 1px solid var(--border); }
+.foot-inner { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 14px; align-items: center; }
+.foot-left { display: flex; align-items: center; gap: 10px; }
+.foot-logo { width: 22px; height: 22px; border-radius: 5px; background: var(--sage); display: flex; align-items: center; justify-content: center; }
+.foot-logo svg { width: 10px; height: 10px; }
+.foot-text { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+.foot-text strong { color: var(--text); font-weight: 600; font-family: 'DM Sans', sans-serif; }
+.foot-contact { font-size: 12px; color: var(--sage-dark); font-weight: 600; font-family: 'DM Sans', sans-serif; text-decoration: none; }
+.foot-contact:hover { color: var(--sage-deeper); }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="/" class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+    <span class="logo-text">FocusPad</span>
+    <div class="logo-divider"></div>
+    <span class="logo-page">Live Demo</span>
+  </a>
+  <div class="nav-right"><span class="live-tag"><span class="live-dot"></span>Interactive</span></div>
+</nav>
+<div class="container">
+  <section class="demos-section">
+    <div class="demos-grid">
+      <a href="/phone-demo.html" class="demo-card">
+        <div class="demo-preview"><div class="prev-phone-bg"><div class="prev-phone"><div class="prev-phone-screen"><div class="prev-phone-lock"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><div class="prev-phone-text">FocusPad Active</div><div class="prev-phone-sub">AP US History · P3</div></div></div></div></div>
+        <div class="demo-card-body"><h3>Student phone</h3></div>
+      </a>
+      <a href="/teacher-dashboard.html" class="demo-card">
+        <div class="demo-preview"><div class="prev-teacher"><div class="prev-desk-grid">
+          <div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div>
+          <div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk r"></div><div class="prev-desk g"></div><div class="prev-desk g"></div>
+          <div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div>
+          <div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk r"></div><div class="prev-desk g"></div>
+          <div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div><div class="prev-desk g"></div>
+        </div></div></div>
+        <div class="demo-card-body"><h3>Teacher dashboard</h3></div>
+      </a>
+      <a href="/dean-dashboard.html" class="demo-card">
+        <div class="demo-preview"><div class="prev-dean"><div class="prev-rooms">
+          <div class="prev-room"><div class="prev-room-top"><span class="prev-room-num">Rm 214</span><span class="prev-room-pct">100%</span></div><div class="prev-room-bar"><div class="prev-room-bar-fill" style="width: 100%"></div></div></div>
+          <div class="prev-room"><div class="prev-room-top"><span class="prev-room-num">Rm 108</span><span class="prev-room-pct">100%</span></div><div class="prev-room-bar"><div class="prev-room-bar-fill" style="width: 100%"></div></div></div>
+          <div class="prev-room"><div class="prev-room-top"><span class="prev-room-num">Rm 305</span><span class="prev-room-pct">100%</span></div><div class="prev-room-bar"><div class="prev-room-bar-fill" style="width: 100%"></div></div></div>
+          <div class="prev-room warn"><div class="prev-room-top"><span class="prev-room-num">Rm 322</span><span class="prev-room-pct">53%</span></div><div class="prev-room-bar"><div class="prev-room-bar-fill" style="width: 53%"></div></div></div>
+          <div class="prev-room"><div class="prev-room-top"><span class="prev-room-num">Rm 201</span><span class="prev-room-pct">100%</span></div><div class="prev-room-bar"><div class="prev-room-bar-fill" style="width: 100%"></div></div></div>
+          <div class="prev-room"><div class="prev-room-top"><span class="prev-room-num">Rm 415</span><span class="prev-room-pct">100%</span></div><div class="prev-room-bar"><div class="prev-room-bar-fill" style="width: 100%"></div></div></div>
+        </div></div></div>
+        <div class="demo-card-body"><h3>Dean dashboard</h3></div>
+      </a>
+    </div>
+  </section>
+</div>
+</body>
+</html>

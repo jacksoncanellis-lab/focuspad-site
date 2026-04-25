@@ -1,5 +1,3 @@
 {
-  "dependencies": {
-    "playwright": "^1.59.1"
-  }
+  "dependencies": {}
 }
